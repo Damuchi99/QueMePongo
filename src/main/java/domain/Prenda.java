@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class Prenda {
 	private Tipo tipo;
 	private Tela tela;
+	private Trama trama;
 	private String colorPrimario;
 	private String colorSecundario;
 	
@@ -15,23 +16,29 @@ public class Prenda {
 		
 	}
 	
-	public Prenda(Tipo tipo, Tela tela, String colorPrimario) {
+	public Prenda(Tipo tipo, String colorPrimario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
-		this.establecerTela(tela);
 		this.setColorPrimario(colorPrimario);
+		this.establecerTela(tela);
+		this.establecerTrama(trama);
 	}
 	
-	public Prenda(Tipo tipo, Tela tela, String colorPrimario, String colorSecundario) {
+	public Prenda(Tipo tipo, String colorPrimario, String colorSecundario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
-		this.establecerTela(tela);
 		this.setColorPrimario(colorPrimario);
 		this.setColorSecundario(colorSecundario);
+		this.establecerTela(tela);
+		this.establecerTrama(trama);
 	}
 	
 	//metodos
 	
 	public Tipo getTipo() {
 		return this.tipo;
+	}
+	
+	private Tela getTela() {
+		return this.tela;
 	}
 
 	public void setTipo(Tipo tipo) {
@@ -40,6 +47,10 @@ public class Prenda {
 	
 	private void setTela(Tela tela) {
 		this.tela = tela;		
+	}
+	
+	private void setTrama(Trama trama) {
+		this.trama = trama;
 	}
 	
 	public Boolean deCategoria(Categoria categoria) {
@@ -59,6 +70,19 @@ public class Prenda {
 			throw new ValidacionException("ERROR: Alguno de los atributos ingresados es NULL");
 		}
 	}
+	
+	//TODO: clase Color?
+	public void setColorSecundario(String colorSecundario) {
+		if(this.colorPrimario != colorSecundario) {
+			this.colorSecundario = colorSecundario;
+		}else{
+			throw new ColoresIgualesException("ERROR: Se ingresaron colores iguales");
+		}
+	}
+	
+	private void setColorPrimario(String colorPrimario) {
+		this.colorPrimario = colorPrimario;
+	}
 
 	public boolean estaTelaEsPosible(String nombreTela) {
 		ArrayList<Tela> lista = new ArrayList<Tela>();
@@ -75,15 +99,18 @@ public class Prenda {
 		}
 	}
 	
-	public void setColorSecundario(String colorSecundario) {
-		if(this.colorPrimario != colorSecundario) {
-			this.colorSecundario = colorSecundario;
+	public void establecerTrama(Trama trama) {
+		if (this.estaTramaEsPosible(trama)) {
+			this.setTrama(trama);
 		}else{
-			throw new ColoresIgualesException("ERROR: Se ingresaron colores iguales");
+			throw new TramaIncorrectaException("Trama no permitida");
 		}
 	}
-	
-	private void setColorPrimario(String colorPrimario) {
-		this.colorPrimario = colorPrimario;
+
+	public boolean estaTramaEsPosible(Trama trama) {
+		ArrayList<Trama> lista = new ArrayList<Trama>();
+		lista = this.getTela().tramasPosibles;
+		lista.stream().filter(t -> t == trama).collect(Collectors.toList());
+		return !lista.isEmpty();
 	}
 }
