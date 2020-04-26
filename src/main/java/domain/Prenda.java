@@ -80,10 +80,23 @@ public class Prenda {
 		return this.tela == null;
 	}
 	
+	private boolean tramaEsNull() {
+		return this.trama == null;
+	}
+	
+	public Boolean atributosNull() {
+		return this.colorPrimarioEsNull() || this.getTipo().categoriaEsNull() || this.telaEsNull() || this.tramaEsNull();
+	}
+
 	public void validarAtributos() {
-		if(this.colorPrimarioEsNull() || this.getTipo().categoriaEsNull() || this.telaEsNull()) {
+		if(atributosNull()) {
 			throw new ValidacionException("ERROR: Alguno de los atributos ingresados es NULL");
 		}
+	}
+	
+	//TODO: el validarAtributos podria estar aca adentro
+	public void guardate() {
+		this.validarAtributos();
 	}
 	
 	//TODO: clase Color?
