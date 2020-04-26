@@ -10,12 +10,23 @@ public class Prenda {
 	private String colorPrimario;
 	private String colorSecundario;
 	
-	//constructores
+	/*
+	 * CONSTRUCTORES
+	 */
 	
 	public Prenda() {
 		
 	}
 	
+	//El usuario puede no indicar ninguna trama para una tela y que por defecto este lisa
+	public Prenda(Tipo tipo, String colorPrimario, Tela tela) {
+		this.setTipo(tipo);
+		this.setColorPrimario(colorPrimario);
+		this.establecerTela(tela);
+		this.establecerTrama(Trama.LISA);
+	}
+	
+	//El usuario crea una prenda especificando primero de que tipo es, en segundo lugar especifica los aspectos relacionados a su material
 	public Prenda(Tipo tipo, String colorPrimario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
 		this.setColorPrimario(colorPrimario);
@@ -23,6 +34,7 @@ public class Prenda {
 		this.establecerTrama(trama);
 	}
 	
+	//Lo mismo que el anterior pero con color secundario
 	public Prenda(Tipo tipo, String colorPrimario, String colorSecundario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
 		this.setColorPrimario(colorPrimario);
@@ -31,7 +43,10 @@ public class Prenda {
 		this.establecerTrama(trama);
 	}
 	
-	//metodos
+	/*
+	 * METODOS
+	 */
+	
 	
 	public Tipo getTipo() {
 		return this.tipo;
@@ -99,18 +114,18 @@ public class Prenda {
 		}
 	}
 	
+	public boolean estaTramaEsPosible(Trama trama) {
+		ArrayList<Trama> lista = new ArrayList<Trama>();
+		lista = this.getTela().tramasPosibles;
+		lista.stream().filter(t -> t == trama).collect(Collectors.toList());
+		return !lista.isEmpty();
+	}
+	
 	public void establecerTrama(Trama trama) {
 		if (this.estaTramaEsPosible(trama)) {
 			this.setTrama(trama);
 		}else{
 			throw new TramaIncorrectaException("Trama no permitida");
 		}
-	}
-
-	public boolean estaTramaEsPosible(Trama trama) {
-		ArrayList<Trama> lista = new ArrayList<Trama>();
-		lista = this.getTela().tramasPosibles;
-		lista.stream().filter(t -> t == trama).collect(Collectors.toList());
-		return !lista.isEmpty();
 	}
 }
