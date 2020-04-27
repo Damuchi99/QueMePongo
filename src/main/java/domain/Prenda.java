@@ -26,6 +26,14 @@ public class Prenda {
 		this.establecerTrama(Trama.LISA);
 	}
 	
+	public Prenda(Tipo tipo, String colorPrimario, String colorSecundario, Tela tela) {
+		this.setTipo(tipo);
+		this.setColorPrimario(colorPrimario);
+		this.setColorSecundario(colorSecundario);
+		this.establecerTela(tela);
+		this.establecerTrama(Trama.LISA);
+	}
+	
 	//El usuario crea una prenda especificando primero de que tipo es, en segundo lugar especifica los aspectos relacionados a su material
 	public Prenda(Tipo tipo, String colorPrimario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
@@ -54,6 +62,10 @@ public class Prenda {
 	
 	private Tela getTela() {
 		return this.tela;
+	}
+	
+	public Trama getTrama() {
+		return this.trama;
 	}
 
 	public void setTipo(Tipo tipo) {
@@ -92,11 +104,6 @@ public class Prenda {
 		if(atributosNull()) {
 			throw new ValidacionException("ERROR: Alguno de los atributos ingresados es NULL");
 		}
-	}
-	
-	//TODO: el validarAtributos podria estar aca adentro
-	public void guardate() {
-		this.validarAtributos();
 	}
 	
 	//TODO: clase Color?
