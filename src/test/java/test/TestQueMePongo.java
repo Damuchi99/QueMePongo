@@ -4,14 +4,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.Acetato;
 import domain.Algodon;
 import domain.Camisa;
 import domain.Campera;
 import domain.Categoria;
+import domain.Chomba;
 import domain.ColoresIgualesException;
 import domain.Cuero;
 import domain.Nylon;
 import domain.Pantalon;
+import domain.Pique;
 import domain.Poliester;
 import domain.Prenda;
 import domain.Reloj;
@@ -24,6 +27,7 @@ import domain.Trama;
 import domain.TramaIncorrectaException;
 import domain.Usuario;
 import domain.ValidacionException;
+import domain.Zapatillas;
 import domain.Zapato;
 
 public class TestQueMePongo {
@@ -34,24 +38,27 @@ public class TestQueMePongo {
 	 * TELAS
 	 */
 	
-	Algodon algodon;
-	Cuero cuero;
-	Nylon nylon;
-	Poliester poliester;
-	Seda seda;
-			
+	Acetato acetato = new Acetato();
+	Algodon algodon = new Algodon();
+	Cuero cuero = new Cuero();
+	Nylon nylon = new Nylon();
+	Pique pique = new Pique();
+	Poliester poliester = new Poliester();
+	Seda seda = new Seda();
+	
 	/*
 	 * TIPOS
 	 */
 	
-	Camisa camisa;
-	Campera campera;
-	Pantalon pantalon;
-	Reloj reloj;
-	Remera remera;
-	Sandalias sandalias;
-	Shorts shorts;
-	Zapato zapato;
+	Chomba chomba = new Chomba();
+	Camisa camisa = new Camisa();
+	Campera campera = new Campera();
+	Pantalon pantalon = new Pantalon();
+	Remera remera = new Remera();
+	Sandalias sandalias = new Sandalias();
+	Shorts shorts = new Shorts();
+	Zapatillas zapatillas = new Zapatillas();
+	Zapato zapato = new Zapato();
 	
 	@Before
 	public void inicializarQueMePongo() {
@@ -61,22 +68,25 @@ public class TestQueMePongo {
 		/*
 		 * TELAS
 		 */
+		this.acetato = new Acetato();
 		this.algodon = new Algodon();
 		this.cuero = new Cuero();
 		this.nylon = new Nylon();
+		this.pique = new Pique();
 		this.poliester = new Poliester();
 		this.seda = new Seda();
 		
 		/*
 		 * TIPOS
 		 */
+		this.chomba = new Chomba();
 		this.camisa = new Camisa();
 		this.campera = new Campera();
 		this.pantalon = new Pantalon();
-		this.reloj = new Reloj();
 		this.remera = new Remera();
 		this.sandalias = new Sandalias();
 		this.shorts = new Shorts();
+		this.zapatillas = new Zapatillas();
 		this.zapato = new Zapato();
 	}
 	
@@ -98,12 +108,11 @@ public class TestQueMePongo {
 		prendaConMismosColoresConstr = new Prenda(campera, "negro", "negro", algodon);
 	}
 	
-	/*@Test//(expected = TelaIncorrectaException.class)
+	@Test (expected = TelaIncorrectaException.class)
 	public void indicarUnaTelaNoValida() {
 		Prenda unaRemera;
 		unaRemera = new Prenda(remera, "naranja", poliester);
-		Assert.assertEquals(false, unaRemera.estaTelaEsPosible("Poliester"));
-	}*/
+	}
 	
 	@Test
 	public void remeraNoEsCalzado() {
@@ -117,12 +126,11 @@ public class TestQueMePongo {
 		Assert.assertEquals("Zapato", calzado.getTipo().getNombre());
 	}
 	
-	/*@Test//(expected = TramaIncorrectaException.class)
+	@Test (expected = TramaIncorrectaException.class)
 	public void indicarUnaTramaNoValida() {
 		Prenda unaRemera;
 		unaRemera = new Prenda(campera, "naranja", nylon, Trama.CUADROS);
-		Assert.assertEquals(false, unaRemera.estaTramaEsPosible(Trama.CUADROS));
-	}*/
+	}
 	
 	@Test
 	public void unaPrendaQuePorDefectoTieneTramaLisa() {
