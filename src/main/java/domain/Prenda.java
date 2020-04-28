@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Prenda {
@@ -120,10 +121,9 @@ public class Prenda {
 	}
 
 	public boolean estaTelaEsPosible(String nombreTela) {
-		ArrayList<Tela> lista = new ArrayList<Tela>();
-		lista = this.getTipo().telasPosibles;
-		lista.stream().filter(t -> t.getNombre() == nombreTela).collect(Collectors.toList());
-		return !lista.isEmpty();
+		ArrayList<Tela> lista = this.getTipo().telasPosibles;
+		ArrayList<Tela> listaBool = (ArrayList<Tela>) lista.stream().filter(t -> t.getNombre() == nombreTela).collect(Collectors.toList());
+		return !listaBool.isEmpty();
 	}
 	
 	public void establecerTela(Tela tela) {
@@ -135,10 +135,9 @@ public class Prenda {
 	}
 	
 	public boolean estaTramaEsPosible(Trama trama) {
-		ArrayList<Trama> lista = new ArrayList<Trama>();
-		lista = this.getTela().tramasPosibles;
-		lista.stream().filter(t -> t == trama).collect(Collectors.toList());
-		return !lista.isEmpty();
+		ArrayList<Trama> lista = this.getTela().tramasPosibles;
+		List<Trama> listaBool = lista.stream().filter(t -> t == trama).collect(Collectors.toList());
+		return !listaBool.isEmpty();
 	}
 	
 	public void establecerTrama(Trama trama) {
