@@ -2,7 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 
-import exceptions.ValoresMayoesA255Exception;
+import exceptions.ValoresMayoresA255Exception;
 
 public class Color {
 
@@ -36,7 +36,7 @@ public class Color {
 	
 	public void insertarValores(int r, int g, int b) {
 		if(this.valoresMayoresA255(r, g, b)) {
-			throw new ValoresMayoesA255Exception("Se insertaron valores mayores a 255");
+			throw new ValoresMayoresA255Exception("Se insertaron valores mayores a 255");
 		}else {
 			this.setValoresRGB(r, g, b);
 		}
