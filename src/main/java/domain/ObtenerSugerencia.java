@@ -61,8 +61,9 @@ public class ObtenerSugerencia {
 		return lista.get(rand.nextInt(lista.size()));
 	}
 	
-	public Atuendo obtenerSugerenciaUniforme() {
-		Atuendo atuendo = new Atuendo();
+	public Uniforme obtenerSugerenciaUniforme() {
+		Random rand = new Random();
+		Uniforme uniforme = new Uniforme();
 
 		List<Tipo> prendasSuperiores = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.SUPERIOR));
 		List<Tipo> prendasInferiores = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.INFERIOR));
@@ -74,16 +75,16 @@ public class ObtenerSugerencia {
 		
 		Tipo superiorRandom = this.tipoRandom(camisaOChomba);
 		Tipo inferiorRandom = this.tipoRandom(filtrarTiposSegunCondicion(prendasInferiores, esDeNombre("Pantalon")));
-		Tipo calzadoRandom = this.tipoRandom(camisaOChomba);
+		Tipo calzadoRandom = this.tipoRandom(zapatoOZapatillas);
 		
-		Prenda superior = new Prenda(superiorRandom, "clase Color", this.telaRandom(superiorRandom.telasPosibles));
-		Prenda inferior = new Prenda(inferiorRandom, "clase Color", this.telaRandom(inferiorRandom.telasPosibles));
-		Prenda calzado = new Prenda(calzadoRandom, "clase Color", this.telaRandom(calzadoRandom.telasPosibles));
+		Prenda superior = new Prenda(superiorRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(superiorRandom.telasPosibles));
+		Prenda inferior = new Prenda(inferiorRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(inferiorRandom.telasPosibles));
+		Prenda calzado = new Prenda(calzadoRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(calzadoRandom.telasPosibles));
 		
-		atuendo.agregarPrenda(superior);
-		atuendo.agregarPrenda(inferior);
-		atuendo.agregarPrenda(calzado);
+		uniforme.setPrendaSuperior(superior);
+		uniforme.setPrendaInferior(inferior);
+		uniforme.setCalzado(calzado);
 		
-		return atuendo;
+		return uniforme;
 	}
 }

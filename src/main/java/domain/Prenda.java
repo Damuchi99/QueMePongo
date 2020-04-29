@@ -2,14 +2,20 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
+
+import exceptions.ColoresIgualesException;
+import exceptions.TelaIncorrectaException;
+import exceptions.TramaIncorrectaException;
+import exceptions.ValidacionException;
 
 public class Prenda {
 	private Tipo tipo;
 	private Tela tela;
 	private Trama trama;
-	private String colorPrimario;
-	private String colorSecundario;
+	private Color colorPrimario;
+	private Color colorSecundario;
 	
 	/*
 	 * CONSTRUCTORES
@@ -19,34 +25,42 @@ public class Prenda {
 		
 	}
 	
-	//El usuario puede no indicar ninguna trama para una tela y que por defecto este lisa
-	public Prenda(Tipo tipo, String colorPrimario, Tela tela) {
+	public Prenda(Tipo tipo, Color colorPrimario) {
+		Random rand = new Random();
+		
 		this.setTipo(tipo);
-		this.setColorPrimario(colorPrimario);
+		this.colorPrimario = colorPrimario;
+		this.establecerTela(tipo.telasPosibles.get(rand.nextInt(tipo.telasPosibles.size())));
+	}
+	
+	//El usuario puede no indicar ninguna trama para una tela y que por defecto este lisa
+	public Prenda(Tipo tipo, Color colorPrimario, Tela tela) {
+		this.setTipo(tipo);
+		this.colorPrimario = colorPrimario;
 		this.establecerTela(tela);
 		this.establecerTrama(Trama.LISA);
 	}
 	
-	public Prenda(Tipo tipo, String colorPrimario, String colorSecundario, Tela tela) {
+	public Prenda(Tipo tipo, Color colorPrimario, Color colorSecundario, Tela tela) {
 		this.setTipo(tipo);
-		this.setColorPrimario(colorPrimario);
+		this.colorPrimario = colorPrimario;
 		this.setColorSecundario(colorSecundario);
 		this.establecerTela(tela);
 		this.establecerTrama(Trama.LISA);
 	}
 	
 	//El usuario crea una prenda especificando primero de que tipo es, en segundo lugar especifica los aspectos relacionados a su material
-	public Prenda(Tipo tipo, String colorPrimario, Tela tela, Trama trama) {
+	public Prenda(Tipo tipo, Color colorPrimario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
-		this.setColorPrimario(colorPrimario);
+		this.colorPrimario = colorPrimario;
 		this.establecerTela(tela);
 		this.establecerTrama(trama);
 	}
 	
 	//Lo mismo que el anterior pero con color secundario
-	public Prenda(Tipo tipo, String colorPrimario, String colorSecundario, Tela tela, Trama trama) {
+	public Prenda(Tipo tipo, Color colorPrimario, Color colorSecundario, Tela tela, Trama trama) {
 		this.setTipo(tipo);
-		this.setColorPrimario(colorPrimario);
+		this.colorPrimario = colorPrimario;
 		this.setColorSecundario(colorSecundario);
 		this.establecerTela(tela);
 		this.establecerTrama(trama);
@@ -55,7 +69,6 @@ public class Prenda {
 	/*
 	 * METODOS
 	 */
-	
 	
 	public Tipo getTipo() {
 		return this.tipo;
@@ -67,6 +80,14 @@ public class Prenda {
 	
 	public Trama getTrama() {
 		return this.trama;
+	}
+	
+	public Color getColorPrimario() {
+		return this.colorPrimario;
+	}
+	
+	public Color getColorSecundario() {
+		return this.colorSecundario;
 	}
 
 	public void setTipo(Tipo tipo) {
@@ -107,17 +128,12 @@ public class Prenda {
 		}
 	}
 	
-	//TODO: clase Color?
-	public void setColorSecundario(String colorSecundario) {
-		if(this.colorPrimario != colorSecundario) {
+	public void setColorSecundario(Color colorSecundario) {
+		if(!this.colorPrimario.getCodigoRGB().equals(colorSecundario.getCodigoRGB())) {
 			this.colorSecundario = colorSecundario;
 		}else{
 			throw new ColoresIgualesException("ERROR: Se ingresaron colores iguales");
 		}
-	}
-	
-	private void setColorPrimario(String colorPrimario) {
-		this.colorPrimario = colorPrimario;
 	}
 
 	public boolean estaTelaEsPosible(String nombreTela) {
