@@ -32,6 +32,7 @@ import exceptions.TelaIncorrectaException;
 import exceptions.TramaIncorrectaException;
 import exceptions.ValidacionException;
 import exceptions.ValoresMayoesA255Exception;
+import exceptions.ValoresMayoresA255Exception;
 
 public class TestQueMePongo {
 	
