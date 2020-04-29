@@ -10,9 +10,10 @@ import domain.Camisa;
 import domain.Campera;
 import domain.Categoria;
 import domain.Chomba;
-import domain.ColoresIgualesException;
+import domain.Color;
 import domain.Cuero;
 import domain.Nylon;
+import domain.ObtenerSugerencia;
 import domain.Pantalon;
 import domain.Pique;
 import domain.Poliester;
@@ -22,48 +23,52 @@ import domain.Remera;
 import domain.Sandalias;
 import domain.Seda;
 import domain.Shorts;
-import domain.TelaIncorrectaException;
 import domain.Trama;
-import domain.TramaIncorrectaException;
 import domain.Usuario;
-import domain.ValidacionException;
 import domain.Zapatillas;
 import domain.Zapato;
+import exceptions.ColoresIgualesException;
+import exceptions.TelaIncorrectaException;
+import exceptions.TramaIncorrectaException;
+import exceptions.ValidacionException;
+import exceptions.ValoresMayoesA255Exception;
 
 public class TestQueMePongo {
 	
 	Usuario usuario1;
+	ObtenerSugerencia generador;
 	
 	/*
 	 * TELAS
 	 */
 	
-	Acetato acetato = new Acetato();
-	Algodon algodon = new Algodon();
-	Cuero cuero = new Cuero();
-	Nylon nylon = new Nylon();
-	Pique pique = new Pique();
-	Poliester poliester = new Poliester();
-	Seda seda = new Seda();
+	Acetato acetato;
+	Algodon algodon;
+	Cuero cuero;
+	Nylon nylon;
+	Pique pique;
+	Poliester poliester;
+	Seda seda;
 	
 	/*
 	 * TIPOS
 	 */
 	
-	Chomba chomba = new Chomba();
-	Camisa camisa = new Camisa();
-	Campera campera = new Campera();
-	Pantalon pantalon = new Pantalon();
-	Remera remera = new Remera();
-	Sandalias sandalias = new Sandalias();
-	Shorts shorts = new Shorts();
-	Zapatillas zapatillas = new Zapatillas();
-	Zapato zapato = new Zapato();
+	Chomba chomba;
+	Camisa camisa;
+	Campera campera;
+	Pantalon pantalon;
+	Remera remera;
+	Sandalias sandalias;
+	Shorts shorts;
+	Zapatillas zapatillas;
+	Zapato zapato;
 	
 	@Before
 	public void inicializarQueMePongo() {
 		
 		this.usuario1 = new Usuario();
+		this.generador = new ObtenerSugerencia();
 		
 		/*
 		 * TELAS
@@ -96,51 +101,57 @@ public class TestQueMePongo {
 		prendaSinAtributos.validarAtributos();
 	}
 	
+	@Test(expected = ValoresMayoresA255Exception.class)
+	public void agregarUnColorNoValido() {
+		Prenda prendaConColorNoValido;
+		prendaConColorNoValido = new Prenda(shorts, new Color(255, 46, 358), algodon);
+	}
+	
 	@Test(expected = ColoresIgualesException.class)
 	public void agregarUnColorSecundarioIgual(){
-		Prenda prendaConMismosColores = new Prenda(campera, "negro", algodon);
-		prendaConMismosColores.setColorSecundario("negro");
+		Prenda prendaConMismosColores = new Prenda(campera, new Color(255, 255, 255), algodon);
+		prendaConMismosColores.setColorSecundario(new Color(255, 255, 255));
 	}
 	
 	@Test(expected = ColoresIgualesException.class)
 	public void inicializarPrendaConColoresIguales(){
 		Prenda prendaConMismosColoresConstr;
-		prendaConMismosColoresConstr = new Prenda(campera, "negro", "negro", algodon);
+		prendaConMismosColoresConstr = new Prenda(campera, new Color(255, 255, 255), new Color(255, 255, 255), algodon);
 	}
 	
 	@Test (expected = TelaIncorrectaException.class)
 	public void indicarUnaTelaNoValida() {
 		Prenda unaRemera;
-		unaRemera = new Prenda(remera, "naranja", poliester);
+		unaRemera = new Prenda(remera, new Color(255, 255, 255), poliester);
 	}
 	
 	@Test
 	public void remeraNoEsCalzado() {
-		Prenda remeraQueNoEsCalzado = new Prenda(remera, "rojo", algodon);
+		Prenda remeraQueNoEsCalzado = new Prenda(remera, new Color(255, 255, 255), algodon);
 		Assert.assertFalse(remeraQueNoEsCalzado.deCategoria(Categoria.CALZADO));
 	}
 	
 	@Test
 	public void cargoUnCalzado() {
-		Prenda calzado = new Prenda(zapato, "azul", cuero);
+		Prenda calzado = new Prenda(zapato, new Color(255, 255, 255), cuero);
 		Assert.assertEquals("Zapato", calzado.getTipo().getNombre());
 	}
 	
 	@Test (expected = TramaIncorrectaException.class)
 	public void indicarUnaTramaNoValida() {
 		Prenda unaRemera;
-		unaRemera = new Prenda(campera, "naranja", nylon, Trama.CUADROS);
+		unaRemera = new Prenda(campera, new Color(255, 255, 255), nylon, Trama.CUADROS);
 	}
 	
 	@Test
 	public void unaPrendaQuePorDefectoTieneTramaLisa() {
-		Prenda prendaLisa = new Prenda(zapato, "azul", cuero);
+		Prenda prendaLisa = new Prenda(zapato, new Color(255, 255, 255), cuero);
 		Assert.assertEquals(Trama.LISA, prendaLisa.getTrama());
 	}
 	
 	@Test
 	public void guardarUnaPrendaValida() {
-		Prenda prendaAGuardar = new Prenda(shorts, "negro", algodon);
+		Prenda prendaAGuardar = new Prenda(shorts, new Color(255, 255, 255), algodon);
 		usuario1.guardarPrenda(prendaAGuardar);
 		Assert.assertEquals(1, usuario1.borradorPrendas.size());
 	}
