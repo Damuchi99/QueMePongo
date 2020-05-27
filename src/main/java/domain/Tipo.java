@@ -7,6 +7,8 @@ public class Tipo {
 	protected String nombre;
 	protected Categoria categoria;
 	protected ArrayList<Tela> telasPosibles = new ArrayList<Tela>();
+	protected int limiteTemp;
+	//TODO: agregar a las demas prendas
 	
 	public String getNombre() {
 		return nombre;
@@ -30,5 +32,9 @@ public class Tipo {
 
 	public Boolean esDeCategoria(Categoria categoria) {
 		return categoria == this.categoria;
+	}
+	
+	public int getLimiteTemp() {
+		return this.limiteTemp;
 	}
 }
