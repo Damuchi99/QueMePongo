@@ -10,5 +10,6 @@ public class ProveedorClimaAccuWeatherAPI implements ProveedorClima{
 		List<Map<String, Object>> condicionesClimaticas = apiClima.getWeather("Buenos Aires, Argentina");
 	
 		return condicionesClimaticas.get(0).get("Temperature").get("Value").toDegrees();
+		//TODO: arreglar esto de aca
 	}
 }
