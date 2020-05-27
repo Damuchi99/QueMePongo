@@ -1,4 +1,7 @@
-package domain;
+package domain.telas;
+
+import domain.Tela;
+import domain.Trama;
 
 public class Acetato extends Tela{
 	public Acetato() {

@@ -1,5 +1,9 @@
 package domain;
 
+import domain.tipos.Camisa;
+import domain.tipos.Pantalon;
+import domain.tipos.Zapato;
+
 public class UniformeJohnson extends UniformeBuilder{
 	
 	@Override

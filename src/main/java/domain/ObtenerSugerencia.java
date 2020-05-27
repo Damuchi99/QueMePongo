@@ -6,6 +6,24 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import domain.telas.Acetato;
+import domain.telas.Algodon;
+import domain.telas.Cuero;
+import domain.telas.Nylon;
+import domain.telas.Pique;
+import domain.telas.Poliester;
+import domain.telas.Seda;
+import domain.tipos.Camisa;
+import domain.tipos.Campera;
+import domain.tipos.Chomba;
+import domain.tipos.Pantalon;
+import domain.tipos.Reloj;
+import domain.tipos.Remera;
+import domain.tipos.Sandalias;
+import domain.tipos.Shorts;
+import domain.tipos.Zapatillas;
+import domain.tipos.Zapato;
+
 public class ObtenerSugerencia {
 	
 	ArrayList<Tipo> tipos = new ArrayList<Tipo>();

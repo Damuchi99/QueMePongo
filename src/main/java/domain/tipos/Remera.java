@@ -1,4 +1,9 @@
-package domain;
+package domain.tipos;
+
+import domain.Categoria;
+import domain.Tipo;
+import domain.telas.Algodon;
+import domain.telas.Nylon;
 
 public class Remera extends Tipo{
 	public Remera(){

@@ -1,4 +1,10 @@
-package domain;
+package domain.tipos;
+
+import domain.Categoria;
+import domain.Tipo;
+import domain.telas.Algodon;
+import domain.telas.Pique;
+import domain.telas.Poliester;
 
 public class Chomba extends Tipo{
 	public Chomba(){

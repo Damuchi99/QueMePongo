@@ -1,4 +1,9 @@
-package domain;
+package domain.tipos;
+
+import domain.Categoria;
+import domain.Tipo;
+import domain.telas.Cuero;
+import domain.telas.Nylon;
 
 public class Zapato extends Tipo{
 	public Zapato(){

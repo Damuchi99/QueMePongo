@@ -1,4 +1,7 @@
-package domain;
+package domain.telas;
+
+import domain.Tela;
+import domain.Trama;
 
 public class Poliester extends Tela{
 	public Poliester() {

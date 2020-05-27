@@ -1,4 +1,12 @@
-package domain;
+package domain.tipos;
+
+import domain.Categoria;
+import domain.Tipo;
+import domain.telas.Algodon;
+import domain.telas.Cuero;
+import domain.telas.Nylon;
+import domain.telas.Poliester;
+import domain.telas.Seda;
 
 public class Campera extends Tipo{
 	public Campera(){

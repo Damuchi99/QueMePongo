@@ -1,5 +1,11 @@
 package domain;
 
+import domain.telas.Acetato;
+import domain.telas.Pique;
+import domain.tipos.Chomba;
+import domain.tipos.Pantalon;
+import domain.tipos.Zapatillas;
+
 public class UniformeSanJuan extends UniformeBuilder{
 	
 	@Override

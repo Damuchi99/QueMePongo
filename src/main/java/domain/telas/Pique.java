@@ -1,8 +1,11 @@
-package domain;
+package domain.telas;
 
-public class Algodon extends Tela{
-	public Algodon() {
-		this.nombre = "Algodon";
+import domain.Tela;
+import domain.Trama;
+
+public class Pique extends Tela{
+	public Pique() {
+		this.nombre = "Pique";
 		this.tramasPosibles.add(Trama.LISA);
 		this.tramasPosibles.add(Trama.CUADROS);
 		this.tramasPosibles.add(Trama.RAYADA);
