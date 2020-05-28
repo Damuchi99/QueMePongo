@@ -1,5 +1,5 @@
 package apiclima;
 
 public interface ProveedorClima {
-	public int getTemperatura();
+	public double getTemperatura();
 }

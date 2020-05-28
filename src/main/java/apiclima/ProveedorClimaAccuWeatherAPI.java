@@ -4,12 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 public class ProveedorClimaAccuWeatherAPI implements ProveedorClima{
+	private AccuWeatherAPI apiClima;
+	List<Map<String, Object>> condicionesClimaticas;
 	
-	public int getTemperatura() {
-		AccuWeatherAPI apiClima = new AccuWeatherAPI();
-		List<Map<String, Object>> condicionesClimaticas = apiClima.getWeather("Buenos Aires, Argentina");
+	public ProveedorClimaAccuWeatherAPI() {
+		apiClima = new AccuWeatherAPI();
+		condicionesClimaticas = apiClima.getWeather("Buenos Aires, Argentina");
+	}
 	
-		return condicionesClimaticas.get(0).get("Temperature").get("Value").toDegrees();
-		//TODO: arreglar esto de aca
+	public double getTemperatura() {
+		Map<String, Object> condicionesClimaticasTemp = (Map<String, Object>) condicionesClimaticas.get(0).get("Temperature");
+		return toDegrees((int) condicionesClimaticasTemp.get("Value"));
+	}
+	
+	public double toDegrees(int temp) {
+		return (temp-32)*(5/9);
 	}
 }
