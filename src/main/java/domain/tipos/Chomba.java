@@ -13,5 +13,6 @@ public class Chomba extends Tipo{
 		this.telasPosibles.add(new Algodon());
 		this.telasPosibles.add(new Pique());
 		this.nombre = "Chomba";
+		this.limiteTemp = 20;
 	}
 }

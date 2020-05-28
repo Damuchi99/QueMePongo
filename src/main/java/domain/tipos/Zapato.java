@@ -11,5 +11,6 @@ public class Zapato extends Tipo{
 		this.telasPosibles.add(new Cuero());
 		this.telasPosibles.add(new Nylon());
 		this.nombre = "Zapato";
+		this.limiteTemp = 15;
 	}
 }

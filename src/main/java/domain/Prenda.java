@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class Prenda {
 	private Trama trama;
 	private Color colorPrimario;
 	private Color colorSecundario;
-	private int temperatura;
+	private double temperatura;
 	
 	/*
 	 * CONSTRUCTORES
@@ -33,45 +34,26 @@ public class Prenda {
 		this.setTipo(tipo);
 		this.colorPrimario = colorPrimario;
 		this.establecerTela(tipo.telasPosibles.get(rand.nextInt(tipo.telasPosibles.size())));
-		this.temperatura = temperatura;
+		this.establecerTemperatura(temperatura);
 	}
 	
 	//El usuario puede no indicar ninguna trama para una tela y que por defecto este lisa
-	public Prenda(Tipo tipo, Color colorPrimario, Tela tela, int temperatura) {
+	public Prenda(Tipo tipo, Color colorPrimario, Tela tela, double limiteTemp) {
 		this.setTipo(tipo);
 		this.colorPrimario = colorPrimario;
 		this.establecerTela(tela);
 		this.establecerTrama(Trama.LISA);
-		this.temperatura = temperatura;
+		this.establecerTemperatura(limiteTemp);
 	}
 	
-	public Prenda(Tipo tipo, Color colorPrimario, Color colorSecundario, Tela tela, int temperatura) {
+	//El usuario crea una prenda especificando primero de que tipo es, en segundo lugar especifica los 
+	//aspectos relacionados a su material
+	public Prenda(Tipo tipo, Color colorPrimario, Tela tela, Trama trama, double temperatura) {
 		this.setTipo(tipo);
 		this.colorPrimario = colorPrimario;
-		this.setColorSecundario(colorSecundario);
-		this.establecerTela(tela);
-		this.establecerTrama(Trama.LISA);
-		this.temperatura = temperatura;
-	}
-	
-	//El usuario crea una prenda especificando primero de que tipo es, en segundo lugar especifica los aspectos relacionados a su material
-	public Prenda(Tipo tipo, Color colorPrimario, Tela tela, Trama trama, int temperatura) {
-		this.setTipo(tipo);
-		this.colorPrimario = colorPrimario;
-		this.establecerTela(tela);
-		this.establecerTrama(trama);
-		this.temperatura = temperatura;
-	}
-	
-	//Lo mismo que el anterior pero con color secundario
-	public Prenda(Tipo tipo, Color colorPrimario, Color colorSecundario, Tela tela, Trama trama, int temperatura) {
-		this.setTipo(tipo);
-		this.colorPrimario = colorPrimario;
-		this.setColorSecundario(colorSecundario);
 		this.establecerTela(tela);
 		this.establecerTrama(trama);
 		this.establecerTemperatura(temperatura);
-		this.temperatura = temperatura;
 	}
 
 	/*
@@ -98,7 +80,7 @@ public class Prenda {
 		return this.colorSecundario;
 	}
 	
-	public int getTemperatura() {
+	public double getTemperatura() {
 		return this.temperatura;
 	}
 
@@ -114,8 +96,8 @@ public class Prenda {
 		this.trama = trama;
 	}
 	
-	private void setTemperatura(int temperatura) {
-		this.temperatura = temperatura;		
+	private void setTemperatura(double limiteTemp) {
+		this.temperatura = limiteTemp;		
 	}
 	
 	public Boolean deCategoria(Categoria categoria) {
@@ -166,16 +148,16 @@ public class Prenda {
 		}
 	}
 	
-	private void establecerTemperatura(int temperatura) {
-		if (validarTemperatura(temperatura)) {
-			this.setTemperatura(temperatura);
+	private void establecerTemperatura(double limiteTemp) {
+		if (this.temperaturaCorrecta(limiteTemp)) {
+			this.setTemperatura(limiteTemp);
 		}else{
 			throw new TemperaturaIncorrectaException("La temperatura es negativa o excede el limite de temperatura del tipo de prenda");
 		}
 	}
 	
-	private boolean validarTemperatura(int temperatura) {
-		return temperatura <= this.getTipo().getLimiteTemp() || temperatura < 0;
+	private boolean temperaturaCorrecta(double temp) {
+		return temp <= this.getTipo().getLimiteTemp() || temp > 0;
 	}
 
 	public boolean estaTramaEsPosible(Trama trama) {

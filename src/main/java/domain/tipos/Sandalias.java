@@ -9,5 +9,6 @@ public class Sandalias extends Tipo{
 		this.categoria = Categoria.CALZADO;
 		this.telasPosibles.add(new Cuero());
 		this.nombre = "Sandalias";
+		this.limiteTemp = 10;
 	}
 }

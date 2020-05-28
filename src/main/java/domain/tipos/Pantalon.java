@@ -15,5 +15,6 @@ public class Pantalon extends Tipo{
 		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Cuero());
 		this.nombre = "Pantalon";
+		this.limiteTemp = 17;
 	}
 }

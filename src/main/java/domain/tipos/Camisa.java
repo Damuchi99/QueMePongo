@@ -15,5 +15,6 @@ public class Camisa extends Tipo{
 		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Poliester());
 		this.nombre = "Camisa";
+		this.limiteTemp = 20;
 	}
 }

@@ -15,5 +15,6 @@ public class Shorts extends Tipo{
 		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Poliester());
 		this.nombre = "Shorts";
+		this.limiteTemp = 12;
 	}
 }

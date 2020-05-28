@@ -29,6 +29,7 @@ import domain.tipos.Zapatillas;
 import domain.tipos.Zapato;
 import exceptions.ColoresIgualesException;
 import exceptions.TelaIncorrectaException;
+import exceptions.TemperaturaIncorrectaException;
 import exceptions.TramaIncorrectaException;
 import exceptions.ValidacionException;
 import exceptions.ValoresMayoresA255Exception;
@@ -63,6 +64,9 @@ public class TestQueMePongo {
 	Shorts shorts;
 	Zapatillas zapatillas;
 	Zapato zapato;
+	
+	static double TEMPERATURA = 25;
+	static double TEMP_MENOR = 1;
 	
 	@Before
 	public void inicializarQueMePongo() {
@@ -104,56 +108,50 @@ public class TestQueMePongo {
 	@Test(expected = ValoresMayoresA255Exception.class)
 	public void agregarUnColorNoValido() {
 		Prenda prendaConColorNoValido;
-		prendaConColorNoValido = new Prenda(shorts, new Color(255, 46, 358), algodon);
+		prendaConColorNoValido = new Prenda(shorts, new Color(255, 46, 358), algodon, TEMPERATURA);
 	}
 	
 	@Test(expected = ColoresIgualesException.class)
 	public void agregarUnColorSecundarioIgual(){
-		Prenda prendaConMismosColores = new Prenda(campera, new Color(255, 255, 255), algodon);
+		Prenda prendaConMismosColores = new Prenda(campera, new Color(255, 255, 255), algodon, 20);
 		prendaConMismosColores.setColorSecundario(new Color(255, 255, 255));
-	}
-	
-	@Test(expected = ColoresIgualesException.class)
-	public void inicializarPrendaConColoresIguales(){
-		Prenda prendaConMismosColoresConstr;
-		prendaConMismosColoresConstr = new Prenda(campera, new Color(255, 255, 255), new Color(255, 255, 255), algodon);
 	}
 	
 	@Test (expected = TelaIncorrectaException.class)
 	public void indicarUnaTelaNoValida() {
 		Prenda unaRemera;
-		unaRemera = new Prenda(remera, new Color(255, 255, 255), poliester);
+		unaRemera = new Prenda(remera, new Color(255, 255, 255), poliester, TEMPERATURA);
 	}
 	
 	@Test
 	public void remeraNoEsCalzado() {
-		Prenda remeraQueNoEsCalzado = new Prenda(remera, new Color(255, 255, 255), algodon);
+		Prenda remeraQueNoEsCalzado = new Prenda(remera, new Color(255, 255, 255), algodon, TEMPERATURA);
 		Assert.assertFalse(remeraQueNoEsCalzado.deCategoria(Categoria.CALZADO));
 	}
 	
 	@Test
 	public void cargoUnCalzado() {
-		Prenda calzado = new Prenda(zapato, new Color(255, 255, 255), cuero);
+		Prenda calzado = new Prenda(zapato, new Color(255, 255, 255), cuero, TEMPERATURA);
 		Assert.assertEquals("Zapato", calzado.getTipo().getNombre());
 	}
 	
 	@Test (expected = TramaIncorrectaException.class)
 	public void indicarUnaTramaNoValida() {
 		Prenda unaRemera;
-		unaRemera = new Prenda(campera, new Color(255, 255, 255), nylon, Trama.CUADROS);
+		unaRemera = new Prenda(campera, new Color(255, 255, 255), nylon, Trama.CUADROS, TEMPERATURA);
 	}
 	
 	@Test
 	public void unaPrendaQuePorDefectoTieneTramaLisa() {
-		Prenda prendaLisa = new Prenda(zapato, new Color(255, 255, 255), cuero);
+		Prenda prendaLisa = new Prenda(zapato, new Color(255, 255, 255), cuero, TEMPERATURA);
 		Assert.assertEquals(Trama.LISA, prendaLisa.getTrama());
 	}
 	
 	@Test
 	public void guardarUnaPrendaValida() {
-		Prenda prendaAGuardar = new Prenda(shorts, new Color(255, 255, 255), algodon);
+		Prenda prendaAGuardar = new Prenda(shorts, new Color(255, 255, 255), algodon, 10);
 		usuario1.guardarPrenda(prendaAGuardar);
-		Assert.assertEquals(1, usuario1.borradorPrendas.size());
+		Assert.assertEquals(1, usuario1.prendas.size());
 	}
 	
 	@Test(expected = ValidacionException.class)
@@ -161,4 +159,11 @@ public class TestQueMePongo {
 		Prenda prendaAGuardar = new Prenda();
 		usuario1.guardarPrenda(prendaAGuardar);
 	}
+	
+	@Test(expected = TemperaturaIncorrectaException.class)
+	public void crearPrendaConLimiteDeTemperatura(){
+		Prenda prendaConTemperaturaMenor;
+		prendaConTemperaturaMenor = new Prenda(shorts, new Color(255, 255, 255), algodon, 20); 
+	}
+	
 }

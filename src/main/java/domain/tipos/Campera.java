@@ -17,5 +17,6 @@ public class Campera extends Tipo{
 		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Poliester());
 		this.nombre = "Campera";
+		this.limiteTemp = 25;
 	}
 }

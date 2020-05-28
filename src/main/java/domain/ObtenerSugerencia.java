@@ -79,8 +79,49 @@ public class ObtenerSugerencia {
 		return lista.get(rand.nextInt(lista.size()));
 	}
 	
-	public Uniforme obtenerSugerenciaUniforme() {
+	public Prenda sugerirPrendaRandom(Tipo tipo) {
 		Random rand = new Random();
+		return new Prenda(tipo, 
+						  new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), 
+						  this.telaRandom(tipo.telasPosibles),
+						  tipo.limiteTemp); 
+		//TODO: ver como hacer para que la temperatura de una prenda no de 0
+	}
+	
+	public void obtenerPrendaParaNivelAbrigo(){
+		//TODO: ver las temperaturas
+	}
+	
+	public Atuendo obtenerSugerencia() {
+		Atuendo atuendo = new Atuendo();
+		
+		Predicate<Tipo> esRemeraOCamisa = t -> t.getNombre() == "Remera" || t.getNombre() == "Camisa";
+
+		List<Tipo> prendasSuperiores = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.SUPERIOR));
+		List<Tipo> remerasOCamisas = filtrarTiposSegunCondicion(prendasSuperiores, esRemeraOCamisa);
+		List<Tipo> prendasInferiores = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.INFERIOR));
+		List<Tipo> calzados = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.CALZADO));
+		List<Tipo> accesorios = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.ACCESORIO));
+		
+		Tipo superiorRandom = this.tipoRandom(prendasSuperiores);
+		Tipo inferiorRandom = this.tipoRandom(prendasInferiores);
+		Tipo calzadoRandom = this.tipoRandom(calzados);
+		Tipo accesorioRandom = this.tipoRandom(accesorios);
+		
+		Prenda superior = sugerirPrendaRandom(superiorRandom);
+		Prenda inferior = sugerirPrendaRandom(inferiorRandom);
+		Prenda calzado = sugerirPrendaRandom(calzadoRandom);
+		Prenda accesorio = sugerirPrendaRandom(accesorioRandom);
+
+		atuendo.agregarPrenda(superior);
+		atuendo.agregarPrenda(inferior);
+		atuendo.agregarPrenda(calzado);
+		atuendo.agregarPrenda(accesorio);
+		
+		return atuendo;
+	}
+	
+	public Uniforme obtenerSugerenciaUniforme() {
 		Uniforme uniforme = new Uniforme();
 
 		List<Tipo> prendasSuperiores = filtrarTiposSegunCondicion(this.tipos, esDeCategoria(Categoria.SUPERIOR));
@@ -95,9 +136,9 @@ public class ObtenerSugerencia {
 		Tipo inferiorRandom = this.tipoRandom(filtrarTiposSegunCondicion(prendasInferiores, esDeNombre("Pantalon")));
 		Tipo calzadoRandom = this.tipoRandom(zapatoOZapatillas);
 		
-		Prenda superior = new Prenda(superiorRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(superiorRandom.telasPosibles));
-		Prenda inferior = new Prenda(inferiorRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(inferiorRandom.telasPosibles));
-		Prenda calzado = new Prenda(calzadoRandom, new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), this.telaRandom(calzadoRandom.telasPosibles));
+		Prenda superior = sugerirPrendaRandom(superiorRandom);
+		Prenda inferior = sugerirPrendaRandom(inferiorRandom);
+		Prenda calzado = sugerirPrendaRandom(calzadoRandom);
 		
 		uniforme.setPrendaSuperior(superior);
 		uniforme.setPrendaInferior(inferior);

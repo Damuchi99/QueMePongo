@@ -9,5 +9,6 @@ public class Reloj extends Tipo{
 		this.categoria = Categoria.ACCESORIO;
 		this.telasPosibles.add(new Cuero());
 		this.nombre = "Reloj";
+		this.limiteTemp = 0;
 	}
 }

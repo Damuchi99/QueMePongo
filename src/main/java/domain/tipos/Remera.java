@@ -11,5 +11,6 @@ public class Remera extends Tipo{
 		this.telasPosibles.add(new Algodon());
 		this.telasPosibles.add(new Nylon());
 		this.nombre = "Remera";
+		this.limiteTemp = 20;
 	}
 }
