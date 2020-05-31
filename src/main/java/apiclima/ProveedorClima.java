@@ -1,5 +1,6 @@
 package apiclima;
 
 public interface ProveedorClima {
-	public double getTemperatura();
+	public int temperaturaActual();
+	public boolean hayProbDePrecipitacion();
 }
