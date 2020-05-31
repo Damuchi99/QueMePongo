@@ -34,7 +34,7 @@ public class Usuario {
 	
 	public List<Prenda> getPrendasDelguardarropa(String nombre){
 		Guardarropa guardarropa =  this.getGuardarropa(nombre);
-		//creo que lanzaria exception si no encuentra el guardarropa.
+		//creo que lanzaria excepcion si no encuentra el guardarropa.
 		return guardarropa.getPrendas();
 	}
 	
