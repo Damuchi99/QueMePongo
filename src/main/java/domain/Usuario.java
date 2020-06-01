@@ -15,6 +15,7 @@ public class Usuario {
 	public Usuario() {
 		this.borradorPrendas = new ArrayList<>();
 		this.guardarropas = new ArrayList<>();
+		this.guardarropasCompartidos = new HashMap<>();
 	}
 	
 	public void guardarBorrador(Borrador unBorrador) {
