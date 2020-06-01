@@ -68,13 +68,9 @@ public class ObtenerSugerencia {
 		return prendasQuePuedenAbrigar.get(random.nextInt(prendasQuePuedenAbrigar.size()));
 	}
 
-	private double conseguirTemperatura() {
-		ProveedorClimaAccuWeather provClima = new ProveedorClimaAccuWeather();
+	private double conseguirTemperaturaConAccuWeather() {
+		ProveedorClima provClima = new ProveedorClimaAccuWeather();
 		return provClima.temperaturaActual();
-	}
-	
-	public Predicate<Tipo> esDeNombre(String unNombre) {
-		return t -> t.getNombre() == unNombre;
 	}
 	
 	public Predicate<Prenda> esZapatoOZapatillas(){
@@ -95,7 +91,7 @@ public class ObtenerSugerencia {
 	}
 	
 	public Atuendo obtenerSugerencia(Guardarropa g) {
-		double temperaturaClima = this.conseguirTemperatura();
+		double temperaturaClima = this.conseguirTemperaturaConAccuWeather();
 		Atuendo atuendo = new Atuendo();
 		
 		Predicate<Prenda> esRemeraOCamisa = p -> p.getTipo().getNombre() == "Remera" 
@@ -136,8 +132,4 @@ public class ObtenerSugerencia {
 		
 		return new Uniforme(superior, inferior, calzado);
 	}
-	
-	//TODO: ver lo de los uniformes
-
-	
 }

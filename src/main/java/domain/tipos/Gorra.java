@@ -7,14 +7,12 @@ import domain.telas.Nylon;
 import domain.telas.Poliester;
 import domain.telas.Seda;
 
-public class Camisa extends Tipo{
-	public Camisa(){
-		this.categoria = Categoria.SUPERIOR;
+public class Gorra extends Tipo{
+	public Gorra(){
+		this.categoria = Categoria.ACCESORIO;
 		this.telasPosibles.add(new Algodon());
-		this.telasPosibles.add(new Nylon());
-		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Poliester());
-		this.nombre = "Camisa";
-		this.limiteTemp = 17;
+		this.nombre = "Gorra";
+		this.limiteTemp = 5;
 	}
 }

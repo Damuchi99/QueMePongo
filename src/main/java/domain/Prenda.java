@@ -117,7 +117,10 @@ public class Prenda {
 	}
 	
 	public Boolean atributosNull() {
-		return this.colorPrimarioEsNull() || this.getTipo().categoriaEsNull() || this.telaEsNull() || this.tramaEsNull();
+		return this.colorPrimarioEsNull() || 
+			   this.getTipo().categoriaEsNull() || 
+			   this.telaEsNull() || 
+			   this.tramaEsNull();
 	}
 
 	public void validarAtributos() {
@@ -136,7 +139,9 @@ public class Prenda {
 
 	public boolean estaTelaEsPosible(String nombreTela) {
 		ArrayList<Tela> lista = this.getTipo().telasPosibles;
-		ArrayList<Tela> listaBool = (ArrayList<Tela>) lista.stream().filter(t -> t.getNombre() == nombreTela).collect(Collectors.toList());
+		ArrayList<Tela> listaBool = (ArrayList<Tela>) lista.stream()
+														   .filter(t -> t.getNombre() == nombreTela)
+														   .collect(Collectors.toList());
 		return !listaBool.isEmpty();
 	}
 	
@@ -152,12 +157,13 @@ public class Prenda {
 		if (this.temperaturaCorrecta(limiteTemp)) {
 			this.setTemperatura(limiteTemp);
 		}else{
-			throw new TemperaturaIncorrectaException("La temperatura es negativa o excede el limite de temperatura del tipo de prenda");
+			throw new TemperaturaIncorrectaException
+			("La temperatura es negativa o excede el limite de temperatura del tipo de prenda");
 		}
 	}
 	
 	private boolean temperaturaCorrecta(double temp) {
-		return temp <= this.getTipo().getLimiteTemp() || temp > 0;
+		return temp <= this.getTipo().getLimiteTemp() && temp >= 0;
 	}
 
 	public boolean estaTramaEsPosible(Trama trama) {

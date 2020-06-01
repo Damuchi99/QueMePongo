@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -12,10 +13,12 @@ public class Guardarropa {
 	
 	public Guardarropa(String nombre) {
 		this.nombre = nombre;
+		this.prendas = new ArrayList<>();
 	}
 	
 	public Guardarropa(String nombre, Predicate<Prenda> criterio) {
 		this.nombre = nombre;
+		this.prendas = new ArrayList<>();
 		this.criterio = criterio;
 	}
 	
