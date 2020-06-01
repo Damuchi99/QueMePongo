@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -53,6 +52,7 @@ public class TestQueMePongo {
 	ObtenerSugerencia generador;
 	Guardarropa guardarropa;
 	Guardarropa guardarropaDeViaje;
+	Guardarropa guardarropaDeAbrigo;
 	Usuario usuarioCompartido;
 	Prenda bufanda, camisa, campera, chomba, gorra, pantalon, reloj, remera, sandalias, shorts, zapatillas, zapato;
 	List<Prenda> listaPrendas;
@@ -95,6 +95,7 @@ public class TestQueMePongo {
 		esDeAbrigo = p -> p.getTipo().getLimiteTemp() == 20;
 		
 		guardarropaDeViaje = new Guardarropa("deViaje", esDeViaje);
+		guardarropaDeAbrigo = new Guardarropa("deViaje", esDeAbrigo);
 	}
 	
 	@Test(expected = ValidacionException.class)
@@ -202,8 +203,9 @@ public class TestQueMePongo {
 		unUsuario.getGuardarropa("sarasa");
 	}
 	
-	@Test //ver por qué compartirGuardarropa tira NullPointerException
+	@Test
 	public void compartirGuardarropaConUsuario() {
+		unUsuario.agregarGuardarropa(guardarropa);
 		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
 		Assert.assertEquals(1, usuarioCompartido.getGuardarropas().size());
 	}
@@ -213,4 +215,12 @@ public class TestQueMePongo {
 		guardarropaDeViaje.agregarPrendasSegunCriterio(listaPrendas);
 		Assert.assertEquals(4, guardarropaDeViaje.getPrendas().size());
 	}
+	
+	@Test
+	public void agregarPrendasDeAbrigo() {
+		guardarropaDeAbrigo.agregarPrendasSegunCriterio(listaPrendas);
+		Assert.assertEquals(2, guardarropaDeAbrigo.getPrendas().size());
+	}
+	
+	
 }
