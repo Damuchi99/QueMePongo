@@ -1,11 +1,20 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import apiclima.ProveedorClima;
+import apiclima.ProveedorClimaMock;
 import domain.Categoria;
 import domain.Color;
+import domain.Guardarropa;
 import domain.ObtenerSugerencia;
 import domain.Prenda;
 import domain.Trama;
@@ -13,13 +22,16 @@ import domain.Usuario;
 import domain.telas.Acetato;
 import domain.telas.Algodon;
 import domain.telas.Cuero;
+import domain.telas.Lana;
 import domain.telas.Nylon;
 import domain.telas.Pique;
 import domain.telas.Poliester;
 import domain.telas.Seda;
+import domain.tipos.Bufanda;
 import domain.tipos.Camisa;
 import domain.tipos.Campera;
 import domain.tipos.Chomba;
+import domain.tipos.Gorra;
 import domain.tipos.Pantalon;
 import domain.tipos.Reloj;
 import domain.tipos.Remera;
@@ -28,6 +40,7 @@ import domain.tipos.Shorts;
 import domain.tipos.Zapatillas;
 import domain.tipos.Zapato;
 import exceptions.ColoresIgualesException;
+import exceptions.GuardarropaInexistenteException;
 import exceptions.TelaIncorrectaException;
 import exceptions.TemperaturaIncorrectaException;
 import exceptions.TramaIncorrectaException;
@@ -36,67 +49,52 @@ import exceptions.ValoresMayoresA255Exception;
 
 public class TestQueMePongo {
 	
-	Usuario usuario1;
+	Usuario unUsuario;
 	ObtenerSugerencia generador;
-	
-	/*
-	 * TELAS
-	 */
-	
-	Acetato acetato;
-	Algodon algodon;
-	Cuero cuero;
-	Nylon nylon;
-	Pique pique;
-	Poliester poliester;
-	Seda seda;
-	
-	/*
-	 * TIPOS
-	 */
-	
-	Chomba chomba;
-	Camisa camisa;
-	Campera campera;
-	Pantalon pantalon;
-	Remera remera;
-	Sandalias sandalias;
-	Shorts shorts;
-	Zapatillas zapatillas;
-	Zapato zapato;
-	
-	static double TEMPERATURA = 25;
-	static double TEMP_MENOR = 1;
+	Guardarropa guardarropa;
+	Guardarropa guardarropaDeViaje;
+	Usuario usuarioCompartido;
+	Prenda bufanda, camisa, campera, chomba, gorra, pantalon, reloj, remera, sandalias, shorts, zapatillas, zapato;
+	List<Prenda> listaPrendas;
+	Predicate<Prenda> esDeViaje;
+	Predicate<Prenda> esDeAbrigo;
+	static double TEMPERATURA_QUINCE = 15;
+	static double TEMPERATURA_DIEZ = 10;
+	static double TEMPERATURA_CINCO = 5;
+	static double TEMPERATURA_CERO = 0;
+	static double TEMP_NEGATIVA = -1;
 	
 	@Before
 	public void inicializarQueMePongo() {
+		unUsuario = new Usuario();
+		usuarioCompartido = new Usuario();
+		generador = new ObtenerSugerencia();
+		guardarropa = new Guardarropa("guardarropa");
 		
-		this.usuario1 = new Usuario();
-		this.generador = new ObtenerSugerencia();
+		bufanda = new Prenda(new Bufanda(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
+		camisa = new Prenda(new Camisa(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
+		campera = new Prenda(new Campera(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
+		chomba = new Prenda(new Chomba(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
+		gorra = new Prenda(new Gorra(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_CINCO);
+		pantalon = new Prenda(new Pantalon(), new Color(0, 0, 0), new Nylon(), Trama.RAYADA, TEMPERATURA_QUINCE);
+		reloj = new Prenda(new Reloj(), new Color(0, 0, 0), new Cuero(), TEMPERATURA_CERO);
+		remera = new Prenda(new Remera(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
+		sandalias = new Prenda(new Sandalias(), new Color(0, 0, 0), new Cuero(), TEMPERATURA_DIEZ);
+		shorts = new Prenda(new Shorts(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_DIEZ);
+		zapatillas = new Prenda(new Zapatillas(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
+		zapato = new Prenda(new Zapato(), new Color(0, 0, 0), new Cuero(), TEMPERATURA_QUINCE);
 		
-		/*
-		 * TELAS
-		 */
-		this.acetato = new Acetato();
-		this.algodon = new Algodon();
-		this.cuero = new Cuero();
-		this.nylon = new Nylon();
-		this.pique = new Pique();
-		this.poliester = new Poliester();
-		this.seda = new Seda();
+		listaPrendas = new ArrayList<Prenda>(Arrays
+					   .asList(bufanda, camisa, campera, chomba, gorra, pantalon, 
+							   reloj, remera, sandalias, shorts, zapatillas, zapato));
 		
-		/*
-		 * TIPOS
-		 */
-		this.chomba = new Chomba();
-		this.camisa = new Camisa();
-		this.campera = new Campera();
-		this.pantalon = new Pantalon();
-		this.remera = new Remera();
-		this.sandalias = new Sandalias();
-		this.shorts = new Shorts();
-		this.zapatillas = new Zapatillas();
-		this.zapato = new Zapato();
+		esDeViaje = p -> p.getTipo().getNombre() == "Remera" || 
+				  	p.getTipo().getNombre() == "Shorts" || 
+				  	p.getTipo().getNombre() == "Zapatillas" || 
+				  	p.getTipo().getNombre() == "Gorra";
+		esDeAbrigo = p -> p.getTipo().getLimiteTemp() == 20;
+		
+		guardarropaDeViaje = new Guardarropa("deViaje", esDeViaje);
 	}
 	
 	@Test(expected = ValidacionException.class)
@@ -108,62 +106,111 @@ public class TestQueMePongo {
 	@Test(expected = ValoresMayoresA255Exception.class)
 	public void agregarUnColorNoValido() {
 		Prenda prendaConColorNoValido;
-		prendaConColorNoValido = new Prenda(shorts, new Color(255, 46, 358), algodon, TEMPERATURA);
+		prendaConColorNoValido = new Prenda(new Shorts(), 
+											new Color(255, 255, 358), 
+											new Algodon(), 
+											TEMPERATURA_DIEZ);
 	}
 	
 	@Test(expected = ColoresIgualesException.class)
 	public void agregarUnColorSecundarioIgual(){
-		Prenda prendaConMismosColores = new Prenda(campera, new Color(255, 255, 255), algodon, 20);
+		Prenda prendaConMismosColores = new Prenda(new Campera(), 
+												   new Color(255, 255, 255), 
+												   new Algodon(), 
+												   TEMPERATURA_QUINCE);
 		prendaConMismosColores.setColorSecundario(new Color(255, 255, 255));
 	}
 	
 	@Test (expected = TelaIncorrectaException.class)
 	public void indicarUnaTelaNoValida() {
 		Prenda unaRemera;
-		unaRemera = new Prenda(remera, new Color(255, 255, 255), poliester, TEMPERATURA);
+		unaRemera = new Prenda(new Remera(), new Color(255, 255, 255), new Poliester(), TEMPERATURA_QUINCE);
 	}
 	
 	@Test
 	public void remeraNoEsCalzado() {
-		Prenda remeraQueNoEsCalzado = new Prenda(remera, new Color(255, 255, 255), algodon, TEMPERATURA);
-		Assert.assertFalse(remeraQueNoEsCalzado.deCategoria(Categoria.CALZADO));
+		Prenda unaRemera = new Prenda(new Remera(), new Color(255, 255, 255), new Algodon(), TEMPERATURA_QUINCE);
+		Assert.assertFalse(unaRemera.deCategoria(Categoria.CALZADO));
 	}
 	
 	@Test
 	public void cargoUnCalzado() {
-		Prenda calzado = new Prenda(zapato, new Color(255, 255, 255), cuero, TEMPERATURA);
+		Prenda calzado = new Prenda(new Zapato(), new Color(255, 255, 255), new Cuero(), TEMPERATURA_QUINCE);
 		Assert.assertEquals("Zapato", calzado.getTipo().getNombre());
 	}
 	
 	@Test (expected = TramaIncorrectaException.class)
 	public void indicarUnaTramaNoValida() {
-		Prenda unaRemera;
-		unaRemera = new Prenda(campera, new Color(255, 255, 255), nylon, Trama.CUADROS, TEMPERATURA);
+		Prenda unaCampera;
+		unaCampera = new Prenda(new Campera(), 
+								new Color(255, 255, 255), 
+								new Nylon(), 
+								Trama.CUADROS, 
+								TEMPERATURA_QUINCE);
 	}
 	
 	@Test
 	public void unaPrendaQuePorDefectoTieneTramaLisa() {
-		Prenda prendaLisa = new Prenda(zapato, new Color(255, 255, 255), cuero, TEMPERATURA);
+		Prenda prendaLisa = new Prenda(new Zapato(), new Color(255, 255, 255), new Cuero(), TEMPERATURA_QUINCE);
 		Assert.assertEquals(Trama.LISA, prendaLisa.getTrama());
 	}
 	
 	@Test
 	public void guardarUnaPrendaValida() {
-		Prenda prendaAGuardar = new Prenda(shorts, new Color(255, 255, 255), algodon, 10);
-		usuario1.guardarPrenda(prendaAGuardar);
-		Assert.assertEquals(1, usuario1.prendas.size());
+		Prenda prendaAGuardar = new Prenda(new Shorts(), 
+										   new Color(255, 255, 255), 
+										   new Algodon(), 
+										   TEMPERATURA_DIEZ);
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.agregarPrenda(guardarropa, prendaAGuardar);
+		Assert.assertEquals(1, unUsuario.getGuardarropa("guardarropa").getPrendas().size());
 	}
 	
 	@Test(expected = ValidacionException.class)
 	public void guardarUnaPrendaNoValida() {
 		Prenda prendaAGuardar = new Prenda();
-		usuario1.guardarPrenda(prendaAGuardar);
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.agregarPrenda(guardarropa, prendaAGuardar);
 	}
 	
 	@Test(expected = TemperaturaIncorrectaException.class)
-	public void crearPrendaConLimiteDeTemperatura(){
-		Prenda prendaConTemperaturaMenor;
-		prendaConTemperaturaMenor = new Prenda(shorts, new Color(255, 255, 255), algodon, 20); 
+	public void prendaConTemperaturaMayorAlLimiteDelTipo(){
+		Prenda unaPrenda;
+		unaPrenda = new Prenda(new Shorts(), new Color(255, 255, 255), new Algodon(), TEMPERATURA_QUINCE); 
 	}
 	
+	@Test(expected = TemperaturaIncorrectaException.class)
+	public void prendaConTemperaturaNegativa(){
+		Prenda unaPrenda;
+		unaPrenda = new Prenda(new Shorts(), new Color(255, 255, 255), new Algodon(), TEMP_NEGATIVA); 
+	}
+	
+	@Test
+	public void obtenerTemperaturaConProveedorClima() {
+		ProveedorClima provClima = new ProveedorClimaMock();
+		Assert.assertEquals(27, provClima.temperaturaActual());
+	}
+	
+	@Test
+	public void verSiHayPrecipitacionesConProveedorClima() {
+		ProveedorClima provClima = new ProveedorClimaMock();
+		Assert.assertEquals(false, provClima.hayProbDePrecipitacion());
+	}
+	
+	@Test(expected = GuardarropaInexistenteException.class)
+	public void conseguirGuardarropaQueNoExiste() {
+		unUsuario.getGuardarropa("sarasa");
+	}
+	
+	@Test //ver por qué compartirGuardarropa tira NullPointerException
+	public void compartirGuardarropaConUsuario() {
+		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
+		Assert.assertEquals(1, usuarioCompartido.getGuardarropas().size());
+	}
+	
+	@Test
+	public void agregarPrendasDeViaje() {
+		guardarropaDeViaje.agregarPrendasSegunCriterio(listaPrendas);
+		Assert.assertEquals(4, guardarropaDeViaje.getPrendas().size());
+	}
 }
