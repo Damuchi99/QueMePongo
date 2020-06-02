@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import entities.ObtenerSugerencia;
+
 public class Guardarropa {
 	private String nombre;
 	private List<Prenda> prendas;
 	//pueden haber guardarropas sin criterio alguno
 	private Predicate<Prenda> criterio;
+	private ObtenerSugerencia obtenerSugerencia;
 	
 	public Guardarropa(String nombre) {
 		this.nombre = nombre;
@@ -65,5 +68,9 @@ public class Guardarropa {
 		for(Prenda p : prendasFiltradas) {
 			this.agregarPrenda(p);
 		}
+	}
+	
+	public Atuendo obtenerSugerencia() {
+		return obtenerSugerencia.obtenerSugerencia(this);
 	}
 }
