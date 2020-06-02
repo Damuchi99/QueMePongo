@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import entities.ObtenerSugerencia;
-
 public class Guardarropa {
 	private String nombre;
 	private List<Prenda> prendas;
