@@ -15,8 +15,8 @@ public class Usuario {
 	private List<Guardarropa> guardarropas;
 	private HashMap<Usuario,Guardarropa> guardarropasCompartidos;
 	
-	List<Propuesta> propuestasPendientes = new ArrayList<>();
-	List<Propuesta> propuestasAceptadas = new ArrayList<>();
+	private List<Propuesta> propuestasPendientes = new ArrayList<>();
+	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
 	
 	public Usuario() {
 		this.borradorPrendas = new ArrayList<>();
