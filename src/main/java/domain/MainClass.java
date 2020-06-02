@@ -7,7 +7,7 @@ public class MainClass {
 		Guardarropa g = new Guardarropa("lel");
 		
 		u.agregarGuardarropa(g);
-		u.compartirGuardarropa(t, g);
-		//System.out.println(t.getGuardarropas().size());
+		//u.compartirGuardarropa(t, g);
+		System.out.println(u.getGuardarropasCompartidos().get(t));
 	}
 }

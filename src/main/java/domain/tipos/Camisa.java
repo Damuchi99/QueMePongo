@@ -2,6 +2,7 @@ package domain.tipos;
 
 import domain.Categoria;
 import domain.Tipo;
+import domain.telas.Acetato;
 import domain.telas.Algodon;
 import domain.telas.Nylon;
 import domain.telas.Poliester;
@@ -14,6 +15,7 @@ public class Camisa extends Tipo{
 		this.telasPosibles.add(new Nylon());
 		this.telasPosibles.add(new Seda());
 		this.telasPosibles.add(new Poliester());
+		this.telasPosibles.add(new Acetato());
 		this.nombre = "Camisa";
 		this.limiteTemp = 17;
 	}

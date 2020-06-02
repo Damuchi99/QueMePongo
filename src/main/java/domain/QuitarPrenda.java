@@ -1,19 +1,16 @@
 package domain;
 
-public abstract class QuitarPrenda extends Propuesta{
+public class QuitarPrenda extends Propuesta{
 
-	public QuitarPrenda(Prenda prenda, Guardarropa guardarropa){
-		this.prenda = prenda;
-		this.guardarropa = guardarropa;
+	public QuitarPrenda(Prenda prenda, Guardarropa guardarropa, Usuario usuario){
+		super(prenda, guardarropa, usuario);
 	}
 	
 	public void deshacer() {
-		this.guardarropa.agregarPrenda(prenda);
-		this.guardarropa.deshacerPropuesta(this);
+		this.usuario.agregarPrenda(guardarropa, prenda);
 	}
 	
 	public void aceptar() {
-		this.guardarropa.quitarPrenda(prenda);
-		this.guardarropa.aceptarPropuesta(this);
+		this.usuario.quitarPrenda(guardarropa, prenda);
 	}
 }
