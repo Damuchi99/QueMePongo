@@ -94,7 +94,7 @@ public class Usuario {
 		this.guardarropasCompartidos.put(otroUsuario, guardarropa);
 	}
 	
-	public void dejarDeCompartirGuardarropaAUnUsuario(Usuario otroUsuario, Guardarropa guardarropa){
+	public void dejarDeCompartirGuardarropa(Usuario otroUsuario, Guardarropa guardarropa){
 		otroUsuario.getGuardarropas().remove(guardarropa);
 		this.guardarropasCompartidos.remove(otroUsuario, guardarropa);
 	}
