@@ -99,13 +99,13 @@ public class Usuario {
 		this.guardarropasCompartidos.remove(otroUsuario, guardarropa);
 	}
 	
-	public Boolean comparteGuardarropaCon(Usuario usuario) {
-		return this.getGuardarropasCompartidos().get(usuario) != null;
+	public Boolean comparteGuardarropaCon(Usuario ortoUsuario) {
+		return this.getGuardarropasCompartidos().get(ortoUsuario) != null;
 	}
 	
-	public void proponerAUsuario(Usuario usuario, Propuesta propuesta) {
-		if(this.comparteGuardarropaCon(usuario)) {
-			usuario.propuestasPendientes.add(propuesta);
+	public void proponerAUsuario(Usuario otroUsuario, Propuesta propuesta) {
+		if(this.comparteGuardarropaCon(otroUsuario)) {
+			otroUsuario.propuestasPendientes.add(propuesta);
 		}else {
 			throw new GuardarropaNoCompartidoException("No compartes guardarropa con el usuario");
 		}
