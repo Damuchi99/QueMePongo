@@ -11,11 +11,14 @@ import org.junit.Test;
 
 import apiclima.ProveedorClima;
 import apiclima.ProveedorClimaMock;
+import domain.AgregarPrenda;
 import domain.Categoria;
 import domain.Color;
 import domain.Guardarropa;
 import domain.ObtenerSugerencia;
 import domain.Prenda;
+import domain.Propuesta;
+import domain.QuitarPrenda;
 import domain.Trama;
 import domain.Usuario;
 import domain.telas.Acetato;
@@ -40,6 +43,9 @@ import domain.tipos.Zapatillas;
 import domain.tipos.Zapato;
 import exceptions.ColoresIgualesException;
 import exceptions.GuardarropaInexistenteException;
+import exceptions.GuardarropaNoCompartidoException;
+import exceptions.GuardarropaSinCriterioException;
+import exceptions.PropuestaInexistenteException;
 import exceptions.TelaIncorrectaException;
 import exceptions.TemperaturaIncorrectaException;
 import exceptions.TramaIncorrectaException;
@@ -58,6 +64,9 @@ public class TestQueMePongo {
 	List<Prenda> listaPrendas;
 	Predicate<Prenda> esDeViaje;
 	Predicate<Prenda> esDeAbrigo;
+	Usuario usuarioNoCompartido;
+	Propuesta propuestaAgregarPrenda;
+	Propuesta propuestaQuitarPrenda;
 	static double TEMPERATURA_QUINCE = 15;
 	static double TEMPERATURA_DIEZ = 10;
 	static double TEMPERATURA_CINCO = 5;
@@ -68,13 +77,14 @@ public class TestQueMePongo {
 	public void inicializarQueMePongo() {
 		unUsuario = new Usuario();
 		usuarioCompartido = new Usuario();
+		usuarioNoCompartido = new Usuario();
 		generador = new ObtenerSugerencia();
 		guardarropa = new Guardarropa("guardarropa");
 		
 		bufanda = new Prenda(new Bufanda(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
-		camisa = new Prenda(new Camisa(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
-		campera = new Prenda(new Campera(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
-		chomba = new Prenda(new Chomba(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_QUINCE);
+		camisa = new Prenda(new Camisa(), new Color(0, 0, 0), new Seda(), TEMPERATURA_QUINCE);
+		campera = new Prenda(new Campera(), new Color(0, 0, 0), new Acetato(), TEMPERATURA_QUINCE);
+		chomba = new Prenda(new Chomba(), new Color(0, 0, 0), new Pique(), TEMPERATURA_QUINCE);
 		gorra = new Prenda(new Gorra(), new Color(0, 0, 0), new Algodon(), TEMPERATURA_CINCO);
 		pantalon = new Prenda(new Pantalon(), new Color(0, 0, 0), new Nylon(), Trama.RAYADA, TEMPERATURA_QUINCE);
 		reloj = new Prenda(new Reloj(), new Color(0, 0, 0), new Cuero(), TEMPERATURA_CERO);
@@ -96,6 +106,9 @@ public class TestQueMePongo {
 		
 		guardarropaDeViaje = new Guardarropa("deViaje", esDeViaje);
 		guardarropaDeAbrigo = new Guardarropa("deViaje", esDeAbrigo);
+		
+		propuestaAgregarPrenda = new AgregarPrenda(bufanda, guardarropa, usuarioCompartido);
+		propuestaQuitarPrenda  = new QuitarPrenda(bufanda, guardarropa, usuarioCompartido);
 	}
 	
 	@Test(expected = ValidacionException.class)
@@ -198,6 +211,19 @@ public class TestQueMePongo {
 		Assert.assertEquals(false, provClima.hayProbDePrecipitacion());
 	}
 	
+	@Test
+	public void agregarListaDePrendas() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.agregarPrendas(guardarropa, listaPrendas);
+		Assert.assertEquals(listaPrendas.size(), guardarropa.getPrendas().size());
+	}
+	
+	@Test(expected = GuardarropaSinCriterioException.class)
+	public void agregarPrendasAUnGuardarropaSinCriterio(){
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.agregarPrendasSegunCondicion(guardarropa, listaPrendas);
+	}
+	
 	@Test(expected = GuardarropaInexistenteException.class)
 	public void conseguirGuardarropaQueNoExiste() {
 		unUsuario.getGuardarropa("sarasa");
@@ -207,7 +233,7 @@ public class TestQueMePongo {
 	public void compartirGuardarropaConUsuario() {
 		unUsuario.agregarGuardarropa(guardarropa);
 		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
-		Assert.assertEquals(1, usuarioCompartido.getGuardarropas().size());
+		Assert.assertEquals(1, unUsuario.getGuardarropasCompartidos().size());
 	}
 	
 	@Test
@@ -222,5 +248,59 @@ public class TestQueMePongo {
 		Assert.assertEquals(2, guardarropaDeAbrigo.getPrendas().size());
 	}
 	
+	@Test
+	public void hacerUnaPropuestaAUsuario() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
+		unUsuario.proponerAUsuario(usuarioCompartido, propuestaAgregarPrenda);
+		Assert.assertEquals(1, usuarioCompartido.getPropuestasPendientes().size());
+	}
 	
+	//hacer una propuesta a un usuario con el que no compartis guardarropa
+	@Test(expected = GuardarropaNoCompartidoException.class)
+	public void hacerUnaPropuestaAUsuarioNoCompartido() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.proponerAUsuario(usuarioNoCompartido, propuestaAgregarPrenda);
+	}
+	
+	@Test
+	public void usuarioCompartidoAceptaAgregarPrenda() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
+		unUsuario.proponerAUsuario(usuarioCompartido, propuestaAgregarPrenda);
+		usuarioCompartido.aceptarPropuesta(propuestaAgregarPrenda);
+		Assert.assertTrue(usuarioCompartido.getPropuestasPendientes().size() == 0 
+						  && usuarioCompartido.getPropuestasAceptadas().size() == 1);
+		Assert.assertEquals(true, usuarioCompartido.getGuardarropa("guardarropa")
+												   .getPrendas()
+												   .contains(bufanda));
+	}
+	
+	@Test
+	public void usuarioCompartidoAceptaQuitarPrenda() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.agregarPrenda(guardarropa, bufanda);
+		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
+		unUsuario.proponerAUsuario(usuarioCompartido, propuestaQuitarPrenda);
+		usuarioCompartido.aceptarPropuesta(propuestaQuitarPrenda);
+		Assert.assertTrue(usuarioCompartido.getPropuestasPendientes().size() == 0 
+				&& usuarioCompartido.getPropuestasAceptadas().size() == 1);
+		Assert.assertEquals(false, usuarioCompartido.getGuardarropa("guardarropa")
+				   								   .getPrendas()
+				   								   .contains(bufanda));
+	}
+	
+	@Test
+	public void usuarioCompartidoRechazaPropuesta() {
+		unUsuario.agregarGuardarropa(guardarropa);
+		unUsuario.compartirGuardarropa(usuarioCompartido, guardarropa);
+		unUsuario.proponerAUsuario(usuarioCompartido, propuestaAgregarPrenda);
+		usuarioCompartido.rechazarPropuesta(propuestaAgregarPrenda);
+		Assert.assertEquals(0, usuarioCompartido.getPropuestasPendientes().size());
+	}
+	
+	@Test(expected = PropuestaInexistenteException.class)
+	public void aceptarPropuestaQueNoExiste() {
+		unUsuario.aceptarPropuesta(propuestaAgregarPrenda);
+	}
 }
