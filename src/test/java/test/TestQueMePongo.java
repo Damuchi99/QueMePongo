@@ -15,7 +15,6 @@ import domain.AgregarPrenda;
 import domain.Categoria;
 import domain.Color;
 import domain.Guardarropa;
-import domain.ObtenerSugerencia;
 import domain.Prenda;
 import domain.Propuesta;
 import domain.QuitarPrenda;
@@ -55,7 +54,6 @@ import exceptions.ValoresMayoresA255Exception;
 public class TestQueMePongo {
 	
 	Usuario unUsuario;
-	ObtenerSugerencia generador;
 	Guardarropa guardarropa;
 	Guardarropa guardarropaDeViaje;
 	Guardarropa guardarropaDeAbrigo;
@@ -78,7 +76,6 @@ public class TestQueMePongo {
 		unUsuario = new Usuario();
 		usuarioCompartido = new Usuario();
 		usuarioNoCompartido = new Usuario();
-		generador = new ObtenerSugerencia();
 		guardarropa = new Guardarropa("guardarropa");
 		
 		bufanda = new Prenda(new Bufanda(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
