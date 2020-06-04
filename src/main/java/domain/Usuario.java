@@ -14,7 +14,6 @@ public class Usuario {
 	private List<Borrador> borradorPrendas;
 	private List<Guardarropa> guardarropas;
 	private HashMap<Usuario,Guardarropa> guardarropasCompartidos;
-	
 	private List<Propuesta> propuestasPendientes = new ArrayList<>();
 	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
 	
@@ -24,22 +23,17 @@ public class Usuario {
 		this.guardarropasCompartidos = new HashMap<>();
 	}
 	
+	/*
+	 * Borrador
+	 */
+	
 	public void guardarBorrador(Borrador unBorrador) {
 		this.borradorPrendas.add(unBorrador);
 	}
 	
-	public void agregarGuardarropa(Guardarropa guardarropa){
-		this.guardarropas.add(guardarropa);
-	}
-	
-	public Guardarropa getGuardarropa(String nombre){
-		if(hayGuardarropaConNombre(nombre)) {
-			return this.getGuardarropas().stream().filter(g -> g.getNombre().toLowerCase() == nombre.toLowerCase())
-					.collect(Collectors.toList()).get(0);
-		}else{
-			throw new GuardarropaInexistenteException("No existe el guardarropa especificado");
-		}
-	}
+	/*
+	 * Guardarropa
+	 */
 	
 	public List<Guardarropa> getGuardarropas(){
 		return this.guardarropas;
@@ -52,17 +46,25 @@ public class Usuario {
 								.size() != 0;
 	}
 	
-	public List<Prenda> getPrendasDelguardarropa(String nombre){
-		if(hayGuardarropaConNombre(nombre)) {
-			Guardarropa guardarropa = this.getGuardarropa(nombre);
-			return guardarropa.getPrendas();
-		}else {
+	public Guardarropa getGuardarropa(String nombre){
+		if(!hayGuardarropaConNombre(nombre)) {
 			throw new GuardarropaInexistenteException("No existe el guardarropa especificado");
 		}
+		
+		return this.getGuardarropas().stream()
+									 .filter(g -> g.getNombre().toLowerCase() == nombre.toLowerCase())
+									 .collect(Collectors.toList()).get(0);
+	}
+	
+	public void agregarGuardarropa(Guardarropa guardarropa){
+		this.guardarropas.add(guardarropa);
+	}
+	
+	public void quitarGuardarropa(Guardarropa guardarropa){
+		this.guardarropas.remove(guardarropa);
 	}
 	
 	public void agregarPrenda(Guardarropa guardarropa, Prenda prenda){
-		prenda.validarAtributos();
 		this.getGuardarropa(guardarropa.getNombre()).agregarPrenda(prenda);
 	}
 	
@@ -70,20 +72,25 @@ public class Usuario {
 		this.getGuardarropa(guardarropa.getNombre()).quitarPrenda(prenda);
 	}
 	
+	public List<Prenda> getPrendasDelguardarropa(String nombre){
+		return getGuardarropa(nombre).getPrendas();
+	}
+	
 	public void agregarPrendas(Guardarropa guardarropa, List<Prenda> prendas){
-		for(Prenda p : prendas) {
-			p.validarAtributos();
-		}
 		this.getGuardarropa(guardarropa.getNombre()).agregarPrendas(prendas);
 	}
 	
 	public void agregarPrendasSegunCondicion(Guardarropa guardarropa, List<Prenda> prendas){
-		if(guardarropa.tieneCriterio()) {
-			this.getGuardarropa(guardarropa.getNombre()).agregarPrendasSegunCriterio(prendas);
-		}else {
+		if(!guardarropa.tieneCriterio()) {
 			throw new GuardarropaSinCriterioException("El guardarropa no tiene un criterio asignado");
 		}
+		
+		this.getGuardarropa(guardarropa.getNombre()).agregarPrendasSegunCriterio(prendas);
 	}
+	
+	/*
+	 * Guardarropas compartidos
+	 */
 	
 	public HashMap<Usuario,Guardarropa> getGuardarropasCompartidos(){
 		return this.guardarropasCompartidos;
@@ -95,7 +102,7 @@ public class Usuario {
 	}
 	
 	public void dejarDeCompartirGuardarropa(Usuario otroUsuario, Guardarropa guardarropa){
-		otroUsuario.getGuardarropas().remove(guardarropa);
+		otroUsuario.quitarGuardarropa(guardarropa);
 		this.guardarropasCompartidos.remove(otroUsuario, guardarropa);
 	}
 	
@@ -103,12 +110,16 @@ public class Usuario {
 		return this.getGuardarropasCompartidos().get(ortoUsuario) != null;
 	}
 	
+	/*
+	 * Propuestas
+	 */
+	
 	public void proponerAUsuario(Usuario otroUsuario, Propuesta propuesta) {
-		if(this.comparteGuardarropaCon(otroUsuario)) {
-			otroUsuario.propuestasPendientes.add(propuesta);
-		}else {
+		if(!this.comparteGuardarropaCon(otroUsuario)) {
 			throw new GuardarropaNoCompartidoException("No compartes guardarropa con el usuario");
 		}
+		
+		otroUsuario.propuestasPendientes.add(propuesta);
 	}
 	
 	public List<Propuesta> getPropuestasPendientes() {
@@ -119,35 +130,51 @@ public class Usuario {
 		return this.propuestasAceptadas;
 	}
 	
-	private boolean existeLaPropuesta(Propuesta propuesta) {
-		return this.getPropuestasPendientes().contains(propuesta);
+	public void agregarPropuestaPendiente(Propuesta propuesta) {
+		getPropuestasPendientes().add(propuesta);
+	}
+	
+	public void quitarPropuestaPendiente(Propuesta propuesta) {
+		getPropuestasPendientes().remove(propuesta);
+	}
+	
+	public void agregarPropuestaAceptada(Propuesta propuesta) {
+		getPropuestasAceptadas().add(propuesta);
+	}
+	
+	public void quitarPropuestaAceptada(Propuesta propuesta) {
+		getPropuestasAceptadas().remove(propuesta);
+	}
+	
+	private boolean existeLaPropuestaPendiente(Propuesta propuesta) {
+		return getPropuestasPendientes().contains(propuesta);
+	}
+	
+	private boolean existeLaPropuestaAceptada(Propuesta propuesta) {
+		return getPropuestasAceptadas().contains(propuesta);
 	}
 	
 	public void aceptarPropuesta(Propuesta propuesta) {
-		if(this.existeLaPropuesta(propuesta)) {
-			propuesta.aceptar();
-			this.getPropuestasAceptadas().add(propuesta);
-			this.getPropuestasPendientes().remove(propuesta);
-		}else {
-			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas pendientes/aceptadas");
+		if(!this.existeLaPropuestaPendiente(propuesta)) {
+			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas pendientes");
 		}
+		
+		propuesta.aceptar(this);
     }
 
 	public void rechazarPropuesta(Propuesta propuesta) {
-		if(this.existeLaPropuesta(propuesta)) {
-			this.getPropuestasPendientes().remove(propuesta);
-		}else {
-			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas pendientes/aceptadas");
+		if(!this.existeLaPropuestaPendiente(propuesta)) {
+			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas pendientes");
 		}
+		
+		this.getPropuestasPendientes().remove(propuesta);
     }
 	
 	public void deshacerPropuesta(Propuesta propuesta) {
-		if(this.existeLaPropuesta(propuesta)) {
-			propuesta.deshacer();
-			this.getPropuestasPendientes().add(propuesta);
-			this.getPropuestasAceptadas().remove(propuesta);
-		}else {
-			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas pendientes/aceptadas");
+		if(!this.existeLaPropuestaAceptada(propuesta)) {
+			throw new PropuestaInexistenteException("La propuesta especificada no se encuentra en la lista de propuestas aceptadas");
 		}
+		
+		propuesta.deshacer(this);
 	}
 }

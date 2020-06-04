@@ -107,8 +107,8 @@ public class TestQueMePongo {
 		guardarropaDeViaje = new Guardarropa("deViaje", esDeViaje);
 		guardarropaDeAbrigo = new Guardarropa("deViaje", esDeAbrigo);
 		
-		propuestaAgregarPrenda = new AgregarPrenda(bufanda, guardarropa, usuarioCompartido);
-		propuestaQuitarPrenda  = new QuitarPrenda(bufanda, guardarropa, usuarioCompartido);
+		propuestaAgregarPrenda = new AgregarPrenda(bufanda, guardarropa);
+		propuestaQuitarPrenda  = new QuitarPrenda(bufanda, guardarropa);
 	}
 	
 	@Test(expected = ValidacionException.class)

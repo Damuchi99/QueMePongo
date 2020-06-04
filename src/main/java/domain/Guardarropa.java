@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import exceptions.PrendaInexistenteException;
+
 public class Guardarropa {
 	private String nombre;
 	private List<Prenda> prendas;
@@ -32,7 +34,7 @@ public class Guardarropa {
 	}
 	
 	public List<Prenda> getPrendas() {
-		return prendas;
+		return this.prendas;
 	}
 	
 	public Predicate<Prenda> getCriterio(){
@@ -44,19 +46,29 @@ public class Guardarropa {
 	}
 	
 	public Boolean tieneCriterio() {
-		return this.getCriterio() != null;
+		return getCriterio() != null;
+	}
+	
+	public Boolean tieneLaPrenda(Prenda prenda) {
+		return getPrendas().contains(prenda);
 	}
 
 	public void agregarPrenda(Prenda prenda) {
+		prenda.validarAtributos();
 		this.prendas.add(prenda);
 	}
 	
 	public void quitarPrenda(Prenda prenda) {
+		if(!tieneLaPrenda(prenda)) {
+			throw new PrendaInexistenteException("No se encontro la prenda a eliminar");
+		}
+		
 		this.prendas.remove(prenda);
 	}
 	
 	public void agregarPrendas(List<Prenda> prendas) {
 		for(Prenda p : prendas) {
+			p.validarAtributos();
 			this.agregarPrenda(p);
 		}
 	}
@@ -64,6 +76,7 @@ public class Guardarropa {
 	public void agregarPrendasSegunCriterio(List<Prenda> prendas) {
 		List<Prenda> prendasFiltradas = prendas.stream().filter(this.getCriterio()).collect(Collectors.toList());
 		for(Prenda p : prendasFiltradas) {
+			p.validarAtributos();
 			this.agregarPrenda(p);
 		}
 	}
