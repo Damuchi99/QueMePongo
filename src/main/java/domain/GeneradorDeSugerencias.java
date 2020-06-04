@@ -26,7 +26,7 @@ import domain.tipos.Shorts;
 import domain.tipos.Zapatillas;
 import domain.tipos.Zapato;
 
-public class ObtenerSugerencia {
+public class GeneradorDeSugerencias {
 	
 	public List<Prenda> filtrarPrendasSegunCondicion(List<Prenda> prendas, Predicate<Prenda> predicado) {
 		return prendas.stream().filter(predicado).collect(Collectors.toList());

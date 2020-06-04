@@ -12,7 +12,7 @@ public class Guardarropa {
 	private List<Prenda> prendas;
 	//pueden haber guardarropas sin criterio alguno
 	private Predicate<Prenda> criterio;
-	private ObtenerSugerencia obtenerSugerencia;
+	private GeneradorDeSugerencias generadorDeSugerencias;
 	
 	public Guardarropa(String nombre) {
 		this.nombre = nombre;
@@ -82,6 +82,6 @@ public class Guardarropa {
 	}
 	
 	public Atuendo obtenerSugerencia() {
-		return obtenerSugerencia.obtenerSugerencia(this);
+		return generadorDeSugerencias.obtenerSugerencia(this);
 	}
 }
