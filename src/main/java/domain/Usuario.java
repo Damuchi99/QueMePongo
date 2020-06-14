@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import apiclima.ProveedorClima;
 import exceptions.GuardarropaInexistenteException;
 import exceptions.GuardarropaNoCompartidoException;
 import exceptions.GuardarropaSinCriterioException;
@@ -16,6 +17,7 @@ public class Usuario {
 	private HashMap<Usuario,Guardarropa> guardarropasCompartidos;
 	private List<Propuesta> propuestasPendientes = new ArrayList<>();
 	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
+	private Atuendo sugerenciaDiaria;
 	
 	public Usuario() {
 		this.borradorPrendas = new ArrayList<>();
@@ -176,5 +178,10 @@ public class Usuario {
 		}
 		
 		propuesta.deshacer(this);
+	}
+	
+	//TODO: sugerencia diaria de que ponerme
+	public Atuendo actualizarSugerencia(Atuendo atuendo) {
+		return this.sugerenciaDiaria = atuendo;
 	}
 }

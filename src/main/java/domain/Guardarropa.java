@@ -80,8 +80,4 @@ public class Guardarropa {
 			this.agregarPrenda(p);
 		}
 	}
-	
-	public Atuendo obtenerSugerencia() {
-		return generadorDeSugerencias.obtenerSugerencia(this);
-	}
 }
