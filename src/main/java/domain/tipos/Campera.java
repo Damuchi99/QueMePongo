@@ -22,5 +22,7 @@ public class Campera extends Tipo{
 		this.telasPosibles.add(new Acetato());
 		this.nombre = "Campera";
 		this.limiteTemp = 25;
+		this.alertasPosibles.add("STORM");
+		this.alertasPosibles.add("HAIL");
 	}
 }

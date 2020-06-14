@@ -8,7 +8,7 @@ public class Tipo {
 	protected Categoria categoria;
 	protected ArrayList<Tela> telasPosibles = new ArrayList<Tela>();
 	protected double limiteTemp;
-	//TODO: agregar a las demas prendas
+	protected ArrayList<String> alertasPosibles = new ArrayList<String>();
 	
 	public String getNombre() {
 		return nombre;
@@ -40,5 +40,9 @@ public class Tipo {
 	
 	public void setLimiteTemp(int limiteTemp) {
 		this.limiteTemp = limiteTemp;
+	}
+	
+	public ArrayList<String> getAlertasPosibles() {
+		return alertasPosibles;
 	}
 }

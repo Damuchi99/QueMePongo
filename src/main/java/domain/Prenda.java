@@ -178,4 +178,8 @@ public class Prenda {
 			throw new TramaIncorrectaException("Trama no permitida");
 		}
 	}
+
+	public Boolean esAptaPara(String alerta) {
+		return getTipo().getAlertasPosibles().contains(alerta);
+	}
 }

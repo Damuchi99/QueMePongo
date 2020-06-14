@@ -14,4 +14,8 @@ public class Atuendo {
 		prenda.validarAtributos();
 		prendas.add(prenda);
 	}
+
+	public List<Prenda> getPrendas() {
+		return prendas;
+	}
 }

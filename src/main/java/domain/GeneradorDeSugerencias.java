@@ -27,6 +27,9 @@ import domain.tipos.Zapatillas;
 import domain.tipos.Zapato;
 
 public class GeneradorDeSugerencias {
+	
+	ProveedorClima provClima = new ProveedorClimaAccuWeather();
+	
 	public List<Prenda> filtrarPrendasSegunCondicion(List<Prenda> prendas, Predicate<Prenda> predicado) {
 		return prendas.stream().filter(predicado).collect(Collectors.toList());
 	}
@@ -35,8 +38,8 @@ public class GeneradorDeSugerencias {
 		return prenda -> prenda.getTipo().getCategoria() == unaCategoria;
 	}
 	
-	public List<Tipo> filtrarTiposSegunCondicion(List<Tipo> tipos, Predicate<Tipo> predicado) {
-		return tipos.stream().filter(predicado).collect(Collectors.toList());
+	public Predicate<Prenda> esAptaPara(String alerta) {
+		return prenda -> prenda.getTipo().getAlertasPosibles().contains(alerta);
 	}
 	
 	public Prenda obtenerPrenda(double temperaturaClima, List<Prenda> prendas){
@@ -66,11 +69,6 @@ public class GeneradorDeSugerencias {
 		Random random = new Random();
 		return prendasQuePuedenAbrigar.get(random.nextInt(prendasQuePuedenAbrigar.size()));
 	}
-
-	private double conseguirTemperaturaConAccuWeather() {
-		ProveedorClima provClima = new ProveedorClimaAccuWeather();
-		return provClima.temperaturaActual();
-	}
 	
 	public Predicate<Prenda> esZapatoOZapatillas(){
 		return p -> p.getTipo().getNombre() == "Zapato" || p.getTipo().getNombre() == "Zapatillas";
@@ -89,8 +87,11 @@ public class GeneradorDeSugerencias {
 		return prendas.get(rand.nextInt(prendas.size()));
 	}
 	
-	public Atuendo obtenerSugerencia(Guardarropa g) {
-		double temperaturaClima = this.conseguirTemperaturaConAccuWeather();
+	public Atuendo obtenerSugerencia(Usuario usuario, ProveedorClima provClima) {
+		Random rand = new Random();
+		
+		double temperaturaClima = provClima.temperaturaActual("Buenos Aires, Argentina");
+		Guardarropa g = usuario.getGuardarropas().get(rand.nextInt(usuario.getGuardarropas().size()));
 		Atuendo atuendo = new Atuendo();
 		
 		Predicate<Prenda> esRemeraOCamisa = p -> p.getTipo().getNombre() == "Remera" 
@@ -114,10 +115,35 @@ public class GeneradorDeSugerencias {
 		
 		return atuendo;
 	}
-	
-	//TODO: sugerencia diaria de que ponerme
-	public Atuendo actualizarSugerencia(Guardarropa g) {
-		return this.obtenerSugerencia(g);
+
+	public Atuendo generarSugerenciaAptaParaAlerta(Usuario usuario, ProveedorClima provClima, String alerta) {
+		Random rand = new Random();
+		
+		double temperaturaClima = provClima.temperaturaActual("Buenos Aires, Argentina");
+		Guardarropa g = usuario.getGuardarropas().get(rand.nextInt(usuario.getGuardarropas().size()));
+		Atuendo atuendo = new Atuendo();
+
+		List<Prenda> prendasSuperiores = 
+		filtrarPrendasSegunCondicion(filtrarPrendasSegunCondicion(g.getPrendas(), esDeCategoria(Categoria.SUPERIOR)), esAptaPara(alerta));
+		List<Prenda> prendasInferiores = 
+		filtrarPrendasSegunCondicion(filtrarPrendasSegunCondicion(g.getPrendas(), esDeCategoria(Categoria.INFERIOR)), esAptaPara(alerta));
+		List<Prenda> calzados = 
+		filtrarPrendasSegunCondicion(filtrarPrendasSegunCondicion(g.getPrendas(), esDeCategoria(Categoria.CALZADO)), esAptaPara(alerta));
+		List<Prenda> accesorios = 
+		filtrarPrendasSegunCondicion(filtrarPrendasSegunCondicion(g.getPrendas(), esDeCategoria(Categoria.ACCESORIO)), esAptaPara(alerta));
+		//filtro primero por la categoria y despues si es apta para la alerta, habria que arreglar esto
+		
+		Prenda superior = obtenerPrenda(temperaturaClima, prendasSuperiores);
+		Prenda inferior = obtenerPrenda(temperaturaClima, prendasInferiores);
+		Prenda calzado = obtenerPrenda(temperaturaClima, calzados);
+		Prenda accesorio = obtenerPrenda(temperaturaClima, accesorios);
+		
+		atuendo.agregarPrenda(superior);
+		atuendo.agregarPrenda(inferior);
+		atuendo.agregarPrenda(calzado);
+		atuendo.agregarPrenda(accesorio);
+		
+		return atuendo;
 	}
 
 	public Uniforme obtenerSugerenciaUniforme(Guardarropa g) {

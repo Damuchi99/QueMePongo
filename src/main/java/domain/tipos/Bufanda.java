@@ -15,5 +15,7 @@ public class Bufanda extends Tipo{
 		this.telasPosibles.add(new Lana());
 		this.nombre = "Camisa";
 		this.limiteTemp = 20;
+		this.alertasPosibles.add("STORM");
+		this.alertasPosibles.add("HAIL");
 	}
 }
