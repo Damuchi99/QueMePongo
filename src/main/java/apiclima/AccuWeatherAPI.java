@@ -20,4 +20,13 @@ public final class AccuWeatherAPI {
 			}});
 		}});
 	}
+	
+	public final List<Map<String, Object>> getAlertas(String ciudad) {
+		List<String> climas = new ArrayList<>();
+        climas.add("STORM");
+        climas.add("HAIL");
+		return Arrays.asList(new HashMap<String, Object>(){{
+			put("CurrentAlerts", climas);
+		}});
+	}
 }
