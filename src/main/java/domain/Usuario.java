@@ -18,11 +18,13 @@ public class Usuario {
 	private List<Propuesta> propuestasPendientes = new ArrayList<>();
 	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
 	private Atuendo sugerenciaDiaria;
+	private Boolean estaInteresado;
 	
-	public Usuario() {
+	public Usuario(Boolean estaInteresado) {
 		this.borradorPrendas = new ArrayList<>();
 		this.guardarropas = new ArrayList<>();
 		this.guardarropasCompartidos = new HashMap<>();
+		this.estaInteresado = estaInteresado;
 	}
 	
 	/*
@@ -183,5 +185,13 @@ public class Usuario {
 	//TODO: sugerencia diaria de que ponerme
 	public Atuendo actualizarSugerencia(Atuendo atuendo) {
 		return this.sugerenciaDiaria = atuendo;
+	}
+
+	public void seInteresaEnRecibirAlertas(Boolean estaInteresado) {
+		this.estaInteresado = estaInteresado;
+	}
+	
+	public Boolean estaInteresado() {
+		return this.estaInteresado;
 	}
 }

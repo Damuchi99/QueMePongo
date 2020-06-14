@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.RepoUsuario;
+import servicionotificacion.Observer;
+
 public class ProveedorClimaAccuWeather implements ProveedorClima{
 	private AccuWeatherAPI apiClima = new AccuWeatherAPI();
 	private List<Map<String, Object>> alertas = new ArrayList<>();
-	private List<Observer> observers = new ArrayList<>();
+	private List<Observer> interesados = new ArrayList<>();
 	
 	@Override
 	public double temperaturaActual(String ciudad) {
@@ -38,6 +41,8 @@ public class ProveedorClimaAccuWeather implements ProveedorClima{
 	
 	public void recibirAlertaMeteorologica(String alerta, String ciudad) {
 		this.obtenerAlertasDe(ciudad).add(alerta);
-		this.observers.forEach(o -> o.notificar(alerta));
+		this.interesados.forEach(i -> i.notificar(alerta));
 	}
+	
+	
 }
