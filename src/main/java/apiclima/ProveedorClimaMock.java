@@ -1,8 +1,5 @@
 package apiclima;
 
-import java.util.List;
-import java.util.Map;
-
 public class ProveedorClimaMock implements ProveedorClima{
 
 	@Override
@@ -16,12 +13,7 @@ public class ProveedorClimaMock implements ProveedorClima{
 	}
 
 	@Override
-	public List<Map<String, Object>> actualizarAlertas(String ciudad) {
-		return null;
-	}
-
-	@Override
-	public List<String> obtenerAlertasDe(String ciudad) {
-		return null;
+	public void actualizarAlertas(String ciudad) {
+		return;
 	}
 }

@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import apiclima.ProveedorClima;
 import exceptions.GuardarropaInexistenteException;
 import exceptions.GuardarropaNoCompartidoException;
 import exceptions.GuardarropaSinCriterioException;
 import exceptions.PropuestaInexistenteException;
+import servicionotificacion.Notificacion;
+import servicionotificacion.NotificationService;
 
 public class Usuario {
 	private List<Borrador> borradorPrendas;
@@ -19,12 +20,41 @@ public class Usuario {
 	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
 	private Atuendo sugerenciaDiaria;
 	private Boolean estaInteresado;
+	private String ciudad;
+	private String mail;
+	private List<Notificacion> notificaciones;
 	
-	public Usuario(Boolean estaInteresado) {
+	public Usuario(Boolean estaInteresado, String ciudad) {
 		this.borradorPrendas = new ArrayList<>();
 		this.guardarropas = new ArrayList<>();
 		this.guardarropasCompartidos = new HashMap<>();
 		this.estaInteresado = estaInteresado;
+		this.ciudad = ciudad;
+	}
+	
+	public Usuario(Boolean estaInteresado, String ciudad, String mail) {
+		this.borradorPrendas = new ArrayList<>();
+		this.guardarropas = new ArrayList<>();
+		this.guardarropasCompartidos = new HashMap<>();
+		this.estaInteresado = estaInteresado;
+		this.ciudad = ciudad;
+		this.mail = mail;
+	}
+	
+	/*
+	 * Datos del usuario
+	 */
+	
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 	
 	/*
@@ -182,16 +212,29 @@ public class Usuario {
 		propuesta.deshacer(this);
 	}
 	
-	//TODO: sugerencia diaria de que ponerme
 	public Atuendo actualizarSugerencia(Atuendo atuendo) {
 		return this.sugerenciaDiaria = atuendo;
 	}
 
-	public void seInteresaEnRecibirAlertas(Boolean estaInteresado) {
-		this.estaInteresado = estaInteresado;
+	public void seInteresaEnRecibirAlertas() {
+		this.estaInteresado = true;
 	}
 	
 	public Boolean estaInteresado() {
 		return this.estaInteresado;
+	}
+	
+	public void generarNotificacion(Notificacion notificacionNueva) {
+		notificaciones.add(notificacionNueva);
+	}
+	
+	public void suscribirseAServicioDeNotificacion(NotificationService servicio) {
+		servicio.suscribirUsuario(this);
+		this.seInteresaEnRecibirAlertas();
+	}
+	
+	public void desuscribirseAServicioDeNotificacion(NotificationService servicio) {
+		servicio.desuscribirUsuario(this);
+		this.seInteresaEnRecibirAlertas();
 	}
 }

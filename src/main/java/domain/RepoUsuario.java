@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RepoUsuario {
-	private static RepoUsuario repoUsuarios;
+	private static RepoUsuario instancia;
 	private List<Usuario> usuarios = new ArrayList<>();
 	
 	public static RepoUsuario getInstance() {
-        if (repoUsuarios == null) {
-        	repoUsuarios = new RepoUsuario();
+        if (instancia == null) {
+        	instancia = new RepoUsuario();
         }
-        return repoUsuarios;
+        return instancia;
     }
 
 	public List<Usuario> getUsuarios() {
@@ -22,5 +22,4 @@ public class RepoUsuario {
 	public List<Usuario> getInteresados(){
 		return getUsuarios().stream().filter(u -> u.estaInteresado()).collect(Collectors.toList());
 	}
-	//TODO: averiguar una forma de notificar a los usuarios
 }

@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import domain.RepoUsuario;
-import servicionotificacion.Observer;
+import servicionotificacion.NotificationService;
 
 public class ProveedorClimaAccuWeather implements ProveedorClima{
 	private AccuWeatherAPI apiClima = new AccuWeatherAPI();
-	private List<Map<String, Object>> alertas = new ArrayList<>();
-	private List<Observer> interesados = new ArrayList<>();
+	private List<String> alertas = new ArrayList<>();
+	private List<NotificationService> serviciosInteresados = new ArrayList<>();
 	
 	@Override
 	public double temperaturaActual(String ciudad) {
@@ -27,22 +27,10 @@ public class ProveedorClimaAccuWeather implements ProveedorClima{
 		List<Map<String, Object>> condicionesClimaticas = apiClima.getWeather(ciudad);
 		return (int)condicionesClimaticas.get(0).get("PrecipitationProbability") == 1;
 	}
-	
-	@Override
-	public List<String> obtenerAlertasDe(String ciudad){
-		return (List<String>) this.actualizarAlertas(ciudad).get(0).get("CurrentAlerts");
-	}
 
 	@Override
-	public List<Map<String, Object>> actualizarAlertas(String ciudad) {
-		this.alertas = (List<Map<String, Object>>) apiClima.getAlertas(ciudad);
-		return this.alertas;
-	}
-	
-	public void recibirAlertaMeteorologica(String alerta, String ciudad) {
-		this.obtenerAlertasDe(ciudad).add(alerta);
-		this.interesados.forEach(i -> i.notificar(alerta));
-	}
-	
-	
+	public void actualizarAlertas(String ciudad) {
+		this.alertas = (List<String>) apiClima.getAlertas(ciudad).get(0).get("CurrentAlerts");
+		this.serviciosInteresados.forEach(servicio -> servicio.notificarUsuarios(alertas));
+	}	
 }
