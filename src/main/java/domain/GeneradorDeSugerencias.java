@@ -6,8 +6,8 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import apiclima.ProveedorClima;
-import apiclima.ProveedorClimaAccuWeather;
+import domain.apiclima.ProveedorClima;
+import domain.apiclima.ProveedorClimaAccuWeather;
 import domain.telas.Acetato;
 import domain.telas.Algodon;
 import domain.telas.Cuero;

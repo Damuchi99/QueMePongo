@@ -1,7 +1,7 @@
 package domain;
 
-import apiclima.ProveedorClima;
-import apiclima.ProveedorClimaAccuWeather;
+import domain.apiclima.ProveedorClima;
+import domain.apiclima.ProveedorClimaAccuWeather;
 
 public class EmpleadoQMP {
 	private GeneradorDeSugerencias generadorSugerencias = new GeneradorDeSugerencias();

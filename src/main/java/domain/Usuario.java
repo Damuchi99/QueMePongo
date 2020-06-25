@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import domain.notificationService.Notificacion;
+import domain.notificationService.NotificationService;
 import exceptions.GuardarropaInexistenteException;
 import exceptions.GuardarropaNoCompartidoException;
 import exceptions.GuardarropaSinCriterioException;
 import exceptions.PropuestaInexistenteException;
-import servicionotificacion.Notificacion;
-import servicionotificacion.NotificationService;
 
 public class Usuario {
 	private List<Borrador> borradorPrendas;

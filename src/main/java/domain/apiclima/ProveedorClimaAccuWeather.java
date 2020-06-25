@@ -1,11 +1,11 @@
-package apiclima;
+package domain.apiclima;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import servicionotificacion.NotificationService;
+import domain.notificationService.NotificationService;
 
 public class ProveedorClimaAccuWeather implements ProveedorClima{
 	private AccuWeatherAPI apiClima = new AccuWeatherAPI();

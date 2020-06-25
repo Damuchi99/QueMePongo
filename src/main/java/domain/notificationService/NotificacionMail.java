@@ -1,4 +1,4 @@
-package servicionotificacion;
+package domain.notificationService;
 
 import java.util.ArrayList;
 import java.util.List;

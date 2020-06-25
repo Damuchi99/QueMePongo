@@ -9,8 +9,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import apiclima.ProveedorClima;
-import apiclima.ProveedorClimaMock;
 import domain.AgregarPrenda;
 import domain.Categoria;
 import domain.Color;
@@ -20,6 +18,8 @@ import domain.Propuesta;
 import domain.QuitarPrenda;
 import domain.Trama;
 import domain.Usuario;
+import domain.apiclima.ProveedorClima;
+import domain.apiclima.ProveedorClimaMock;
 import domain.telas.Acetato;
 import domain.telas.Algodon;
 import domain.telas.Cuero;

@@ -1,12 +1,12 @@
-package servicionotificacion;
+package domain.notificationService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import apiclima.ProveedorClimaAccuWeather;
 import domain.Atuendo;
 import domain.GeneradorDeSugerencias;
 import domain.Usuario;
+import domain.apiclima.ProveedorClimaAccuWeather;
 
 public class NotificacionSugerenciaDiaria implements NotificationService{
 	//TODO: De momento seria mejor que la sugerencia diaria la genere por el NotificacionAlertas

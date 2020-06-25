@@ -1,4 +1,4 @@
-package apiclima;
+package domain.apiclima;
 
 public interface ProveedorClima {
 	public double temperaturaActual(String ciudad);

@@ -1,4 +1,4 @@
-package apiclima;
+package domain.apiclima;
 
 public class ProveedorClimaMock implements ProveedorClima{
 

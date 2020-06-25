@@ -1,13 +1,13 @@
-package servicionotificacion;
+package domain.notificationService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import apiclima.ProveedorClimaAccuWeather;
 import domain.Atuendo;
 import domain.GeneradorDeSugerencias;
 import domain.Usuario;
+import domain.apiclima.ProveedorClimaAccuWeather;
 
 public class NotificacionAlertas implements NotificationService{
 	
