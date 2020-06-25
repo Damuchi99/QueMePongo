@@ -16,27 +16,39 @@ public class Usuario {
 	private List<Borrador> borradorPrendas;
 	private List<Guardarropa> guardarropas;
 	private HashMap<Usuario,Guardarropa> guardarropasCompartidos;
-	private List<Propuesta> propuestasPendientes = new ArrayList<>();
-	private List<Propuesta> propuestasAceptadas = new ArrayList<>();
+	private List<Propuesta> propuestasPendientes;
+	private List<Propuesta> propuestasAceptadas;
 	private Atuendo sugerenciaDiaria;
-	private Boolean estaInteresado;
 	private String ciudad;
 	private String mail;
 	private List<Notificacion> notificaciones;
 	
-	public Usuario(Boolean estaInteresado, String ciudad) {
+	public Usuario() {
 		this.borradorPrendas = new ArrayList<>();
 		this.guardarropas = new ArrayList<>();
 		this.guardarropasCompartidos = new HashMap<>();
-		this.estaInteresado = estaInteresado;
+		this.propuestasPendientes = new ArrayList<>();
+		this.propuestasAceptadas = new ArrayList<>();
+		this.notificaciones = new ArrayList<>();
+	}
+	
+	public Usuario(String ciudad) {
+		this.borradorPrendas = new ArrayList<>();
+		this.guardarropas = new ArrayList<>();
+		this.guardarropasCompartidos = new HashMap<>();
+		this.propuestasPendientes = new ArrayList<>();
+		this.propuestasAceptadas = new ArrayList<>();
+		this.notificaciones = new ArrayList<>();
 		this.ciudad = ciudad;
 	}
 	
-	public Usuario(Boolean estaInteresado, String ciudad, String mail) {
+	public Usuario(String ciudad, String mail) {
 		this.borradorPrendas = new ArrayList<>();
 		this.guardarropas = new ArrayList<>();
 		this.guardarropasCompartidos = new HashMap<>();
-		this.estaInteresado = estaInteresado;
+		this.propuestasPendientes = new ArrayList<>();
+		this.propuestasAceptadas = new ArrayList<>();
+		this.notificaciones = new ArrayList<>();
 		this.ciudad = ciudad;
 		this.mail = mail;
 	}
@@ -47,6 +59,10 @@ public class Usuario {
 	
 	public String getCiudad() {
 		return ciudad;
+	}
+	
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
 	}
 
 	public String getMail() {
@@ -212,16 +228,16 @@ public class Usuario {
 		propuesta.deshacer(this);
 	}
 	
-	public Atuendo actualizarSugerencia(Atuendo atuendo) {
-		return this.sugerenciaDiaria = atuendo;
-	}
-
-	public void seInteresaEnRecibirAlertas() {
-		this.estaInteresado = true;
+	/*
+	 * Notificacion de alertas
+	 */
+	
+	public void actualizarSugerenciaDiaria(Atuendo atuendo) {
+		this.sugerenciaDiaria = atuendo;
 	}
 	
-	public Boolean estaInteresado() {
-		return this.estaInteresado;
+	public Atuendo getSugerenciaDiaria() {
+		return sugerenciaDiaria;
 	}
 	
 	public void generarNotificacion(Notificacion notificacionNueva) {
@@ -230,11 +246,9 @@ public class Usuario {
 	
 	public void suscribirseAServicioDeNotificacion(NotificationService servicio) {
 		servicio.suscribirUsuario(this);
-		this.seInteresaEnRecibirAlertas();
 	}
 	
 	public void desuscribirseAServicioDeNotificacion(NotificationService servicio) {
 		servicio.desuscribirUsuario(this);
-		this.seInteresaEnRecibirAlertas();
 	}
 }

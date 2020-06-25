@@ -73,9 +73,9 @@ public class TestQueMePongo {
 	
 	@Before
 	public void inicializarQueMePongo() {
-		unUsuario = new Usuario(false, "Buenos Aires, Argentina");
-		usuarioCompartido = new Usuario(false, "Buenos Aires, Argentina");
-		usuarioNoCompartido = new Usuario(false, "Buenos Aires, Argentina");
+		unUsuario = new Usuario();
+		usuarioCompartido = new Usuario();
+		usuarioNoCompartido = new Usuario();
 		guardarropa = new Guardarropa("guardarropa");
 		
 		bufanda = new Prenda(new Bufanda(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);

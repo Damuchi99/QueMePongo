@@ -9,7 +9,7 @@ public class NotificacionMail implements NotificationService{
 	
 	private List<Usuario> interesados = new ArrayList<>();
 	
-	public static void send(String mail, List<String> alertas) {
+	public void send(String mail, List<String> alertas) {
 		//enviar mail
 	}
 

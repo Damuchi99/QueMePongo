@@ -17,7 +17,7 @@ public class NotificacionSugerenciaDiaria implements NotificationService{
 	public void notificarUsuarios(List<String> alertas) {
 		interesados.forEach(interesado -> {
 			Atuendo sugerenciaDiaria = generadorSugerencia.generarSugerenciaAptaParaAlerta(interesado, new ProveedorClimaAccuWeather(), "STORM");
-			interesado.actualizarSugerencia(sugerenciaDiaria);
+			interesado.actualizarSugerenciaDiaria(sugerenciaDiaria);
 		});
 	}
 

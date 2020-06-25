@@ -34,7 +34,7 @@ public class NotificacionAlertas implements NotificationService{
 	public void notificarSugerencia(Usuario interesado, String alerta) {
 		GeneradorDeSugerencias generadorSugerencia = new GeneradorDeSugerencias();
 		Atuendo sugerenciaDiaria = generadorSugerencia.generarSugerenciaAptaParaAlerta(interesado, new ProveedorClimaAccuWeather(), alerta);
-		interesado.actualizarSugerencia(sugerenciaDiaria);
+		interesado.actualizarSugerenciaDiaria(sugerenciaDiaria);
 	}
 
 	@Override
