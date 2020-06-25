@@ -3,7 +3,6 @@ package servicionotificacion;
 import java.time.LocalDate;
 import java.util.List;
 
-import apiclima.ProveedorClima;
 import apiclima.ProveedorClimaAccuWeather;
 import domain.Atuendo;
 import domain.GeneradorDeSugerencias;
