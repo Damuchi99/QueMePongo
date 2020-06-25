@@ -73,9 +73,9 @@ public class TestQueMePongo {
 	
 	@Before
 	public void inicializarQueMePongo() {
-		unUsuario = new Usuario();
-		usuarioCompartido = new Usuario();
-		usuarioNoCompartido = new Usuario();
+		unUsuario = new Usuario(false, "Buenos Aires, Argentina");
+		usuarioCompartido = new Usuario(false, "Buenos Aires, Argentina");
+		usuarioNoCompartido = new Usuario(false, "Buenos Aires, Argentina");
 		guardarropa = new Guardarropa("guardarropa");
 		
 		bufanda = new Prenda(new Bufanda(), new Color(0, 0, 0), new Lana(), TEMPERATURA_QUINCE);
@@ -199,13 +199,13 @@ public class TestQueMePongo {
 	@Test
 	public void obtenerTemperaturaConProveedorClima() {
 		ProveedorClima provClima = new ProveedorClimaMock();
-		Assert.assertEquals(27, provClima.temperaturaActual());
+		Assert.assertEquals(27, provClima.temperaturaActual("sarasa"), 0);
 	}
 	
 	@Test
 	public void verSiHayPrecipitacionesConProveedorClima() {
 		ProveedorClima provClima = new ProveedorClimaMock();
-		Assert.assertEquals(false, provClima.hayProbDePrecipitacion());
+		Assert.assertEquals(false, provClima.hayProbDePrecipitacion("sarasa"));
 	}
 	
 	@Test
