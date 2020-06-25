@@ -1,6 +1,7 @@
 package servicionotificacion;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import apiclima.ProveedorClimaAccuWeather;
@@ -10,7 +11,7 @@ import domain.Usuario;
 
 public class NotificacionAlertas implements NotificationService{
 	
-	private List<Usuario> interesados;
+	private List<Usuario> interesados = new ArrayList<>();
 
 	@Override
 	public void notificarUsuarios(List<String> alertas) {
